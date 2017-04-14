@@ -1,0 +1,53 @@
+package beans;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.spring.SpringCamelContext;
+//import org.osgi.framework.FrameworkUtil;
+
+import java.util.Properties;
+
+public class TalendRouteSpringJavaConfig {
+
+    /**
+     * Name of the spring profile when we are running inside an osgi container like karaf.
+     */
+    public static final String ROUTE_RUNNING_IN_OSGI_CONTAINER_SPRING_PROFILE_NAME = "OSGI_CONTAINER";
+
+    /**
+     * Spring bean name for the camel context
+     */
+    public static final String TALEND_ROUTE_CAMEL_CONTEXT_BEAN_NAME = "talendRouteCamelContext";
+
+    /**
+     * To be used inside a talend camel route to enable spring java configuration.
+     *
+     * @param route             the route
+     * @param camelContext      the camel context of the talend route
+     * @param contextName       name of the context of the talend route
+     * @param context           context of the talend route
+     * @param javaConfigClasses spring java configuration classes
+     * @throws NoneApplicableCamelContextException
+     */
+    public static void enableJavaConfig(Object route, CamelContext camelContext, String contextName, Properties context, Class<?> javaConfigClasses) throws NoneApplicableCamelContextException {
+        assertCanBeCastToSpringCamelContext(camelContext);
+        final SpringCamelContextWrapper wrapper = new SpringCamelContextWrapper((SpringCamelContext) camelContext);
+        wrapper.enableSpringEnvironmentProfile(contextName);
+//        if (isRunningInOsgiContainer(route)) {
+//            wrapper.enableSpringEnvironmentProfile(ROUTE_RUNNING_IN_OSGI_CONTAINER_SPRING_PROFILE_NAME);
+//        }
+        wrapper.registerProperties(context);
+        wrapper.maybeRegisterSingleton(TALEND_ROUTE_CAMEL_CONTEXT_BEAN_NAME, camelContext);
+        wrapper.registerSpringConfigurationClasses(javaConfigClasses);
+    }
+
+    private static void assertCanBeCastToSpringCamelContext(CamelContext camelContext) {
+        if (!SpringCamelContext.class.isAssignableFrom(camelContext.getClass())) {
+            throw new NoneApplicableCamelContextException("Cannot enable java config for camel context!");
+        }
+    }
+
+//    private static boolean isRunningInOsgiContainer(Object route) {
+//        return FrameworkUtil.getBundle(route.getClass()) != null;
+//    }
+
+}

@@ -1,0 +1,19 @@
+package beans;
+
+import org.apache.camel.Exchange;
+
+public class KeepHeadersAggregationStrategy implements org.apache.camel.processor.aggregate.AggregationStrategy {
+
+	@Override
+	public Exchange aggregate(Exchange origExchange, Exchange otherExchange) {
+		Exchange newExchange = null;
+		if (origExchange != null) {
+			newExchange = origExchange;
+			newExchange.getIn().getHeaders().putAll(otherExchange.getIn().getHeaders());
+		} else {
+			newExchange = otherExchange;
+		}
+		return newExchange;
+	}
+
+}

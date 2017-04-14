@@ -1,0 +1,42 @@
+package beans;
+
+import org.apache.camel.Header;
+
+import static beans.IDs.DARWIN_START_TIME;
+import static beans.IDs.DARWIN_END_TIME;
+import static org.apache.camel.Exchange.HTTP_QUERY;
+
+/*
+ * 
+ */
+public class DarwinQueryParameterBean {
+
+    /**
+     * 
+     */
+    public static String getQueryParameter(
+    		@Header(HTTP_QUERY)String existingQueryParam,
+    		@Header(DARWIN_START_TIME) String startTime,
+    		@Header(DARWIN_END_TIME) String endTime) {
+
+    	String newQueryParam = existingQueryParam != null
+    		? existingQueryParam
+    		: "$format=json&$filter=UpdatedDate gt datetime'" + startTime
+    		  + "' and UpdatedDate le datetime'" + endTime + "'";
+    	
+    	System.out.println("newQueryParam: " + newQueryParam);
+    	return newQueryParam;
+    }
+    
+
+    /**
+     *
+     */
+    public static String getQueryParameterForCount(
+    		@Header(DARWIN_START_TIME) String startTime,
+    		@Header(DARWIN_END_TIME) String endTime) {
+
+    	return "$filter=UpdatedDate gt datetime'" + startTime + "' and UpdatedDate le datetime'" + endTime + "'";
+    }
+
+}

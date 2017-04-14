@@ -1,0 +1,31 @@
+package beans;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+import static beans.IDs.CRM_ACCOUNT_ID;
+import static beans.IDs.CRM_ACCOUNTS;
+
+/**
+ * Looks for the ID of the entity in the body of the original message in the 'CRM.accountID' of the lookup
+ * message. If found the entity is updated / patched to the URI of with the ID, otherwise a new entity
+ * is created / posted. 
+ */
+public class CreateOrUpdateStrategy implements AggregationStrategy {
+	
+	@Override
+	public Exchange aggregate(Exchange origExchange, Exchange lookupExchange) {
+		Message origIn = origExchange.getIn();
+
+		String accountID = lookupExchange.getIn().getHeader(CRM_ACCOUNT_ID, String.class);
+		if (accountID != null) {
+			origIn.setHeader(Exchange.HTTP_METHOD, "PATCH");
+			origIn.setHeader(Exchange.HTTP_PATH, CRM_ACCOUNTS + "(" + accountID + ")");
+		} else {
+			origIn.setHeader(Exchange.HTTP_METHOD, "POST");				
+			origIn.setHeader(Exchange.HTTP_PATH, CRM_ACCOUNTS);
+		}
+		return origExchange;
+	}
+}

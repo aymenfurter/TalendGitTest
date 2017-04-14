@@ -1,0 +1,51 @@
+package beans;
+
+import java.util.Map.Entry;
+
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONValue;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+
+/*
+ */
+public class AddHeadersStrategy implements AggregationStrategy {
+
+    /**
+     */
+	@Override
+	public Exchange aggregate(Exchange origExchange, Exchange otherExchange) {
+		Exchange newExchange = null;
+
+		if (origExchange != null) {
+
+//			System.out.println("System ID of origExchange: " + System.identityHashCode(origExchange));
+//			System.out.println("In body of orig  exchange: " + origExchange.getIn().getBody());
+
+			newExchange = origExchange;
+			Message newIn = newExchange.getIn();
+			Message otherIn = otherExchange.getIn();
+
+			String resultStr = otherIn.getBody(String.class);
+			JSONObject result = (JSONObject) JSONValue.parse(resultStr);
+			
+			for( Entry<String, Object> entry : result.entrySet()) {
+				String key = getHeaderName(entry.getKey());
+				if (key != null) {
+					Object value = entry.getValue();
+					newIn.setHeader(key, value);
+				}
+			}
+		} else {
+			newExchange = otherExchange;
+		}
+		return newExchange;
+	}
+
+	protected String getHeaderName(String property) {
+		return property;
+	}
+}

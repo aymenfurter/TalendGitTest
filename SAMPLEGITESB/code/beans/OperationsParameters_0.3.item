@@ -1,0 +1,187 @@
+package beans;
+
+import java.util.Arrays;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.stream.Collectors;
+
+import static beans.IDs.*;
+
+public class OperationsParameters {
+
+	private Properties context;
+
+	private Map<String, Map<String, String>> operationsParameters = new HashMap<String, Map<String, String>>();
+
+	public OperationsParameters(Properties context) {
+		this.context = context;
+		init();
+	}
+
+	private void init() {
+		easyInit("CORE_KEY_CONTACT", "darwin_organizationUri", "Organizations", "activemq_organization4Key_contactQueue");
+		easyInit("ORGANIZATION_RELATIONSHIP", "darwin_organizationUri", "Relationships", "activemq_organization4Key_contactQueue");
+		easyInit("CROP_MASTER", "darwin_cropUri", "USHierarchys", "activemq_cropmaster");
+		easyInit("TERRITORY_HIERARCHY", "darwin_territoryUri", "Territorys", "activemq_territoryQueue");
+		easyInit("CROP_AREA", "darwin_cropareaUri", "CropAreas", "activemq_cropareaDetails");
+		easyInit("US_NATIONAL_HIERARCHY", "darwin_organizationUri", "UsNationalHierarchys", "activemq_organizationUsNationalHierarchy");
+		easyInit("SALES", "darwin_salesUri", "Sales", "activemq_salesQueue");
+		initMaterial();
+		initContact();
+		initOrganization();
+	}
+
+	private void easyInit(String apiRouteId, String serviceUri, String entitySet, String destination) {
+		add(apiRouteId, entry(DARWIN_SERVICE_URI, context.get(serviceUri)), entry(DARWIN_ENTITY_SET, entitySet), entry(DARWIN_ENTITY_DESTINATION, context.get(destination)),
+				entry("apiRouteId", apiRouteId));
+	}
+
+	private void initOrganization() {
+		final String serviceuUri = "darwin_organizationUri";
+		easyInit("ORGANIZATION_ACCOUNT_US", serviceuUri, "Organizations", "activemq_organizationQueue");
+		easyInit("ORGANIZATION_ADDRESS_US", serviceuUri, "Addresss", "activemq_addressQueue");
+		easyInit("ORGANIZATION_TERRITORY_US", serviceuUri, "Territorys", "activemq_organizationTerritory");
+		easyInit("ORGANIZATION_NAME_US", serviceuUri, "Names", "activemq_nameQueue");
+		easyInit("ORGANIZATION_PHONE_US", serviceuUri, "Phones", "activemq_phoneQueue");
+		easyInit("ORGANIZATION_ATTRIBUTE_US", serviceuUri, "Attributes", "activemq_attributeQueue");
+		easyInit("ORGANIZATION_IDENTIFIER_US", serviceuUri, "Identifiers", "activemq_identifierQueue");
+	}
+
+	private void initContact() {
+		final String serviceuUri = "darwin_contactUri";
+		easyInit("CONTACT_CORE_US", serviceuUri, "Contacts", "activemq_contactQueue");
+		easyInit("CONTACT_PHONE_US", serviceuUri, "Phones", "activemq_phoneDetailsQueue");
+	}
+
+	private void initMaterial() {
+		final String serviceuUri = "darwin_materialUri";
+		easyInit("MATERIAL_CORE_US", serviceuUri, "Materials", "activemq_material");
+		easyInit("MATERIAL_INDICATOR_US", serviceuUri, "Indicators", "activemq_materialIndicator");
+		easyInit("MATERIAL_SAP_ATTRIBUTE_US", serviceuUri, "SAPAttributes", "activemq_materialSapAttribute");
+		easyInit("MATERIAL_UNIT_OF_MEASURE_US", serviceuUri, "UnitOfMeasures", "activemq_materialUnitOfMeasure");
+		easyInit("MATERIAL_US_CROP_HIERARCHY_US", serviceuUri, "UsCropHierarchys", "activemq_materialUsCropHierarchy");
+		easyInit("MATERIAL_US_SEED_HIERARCHY_US", serviceuUri, "UsSeedHierarchys", "activemq_materialUsSeedHierarchy");
+	}
+
+	public OperationParameters getParameters(String operationName, String entityId) {
+		Map<String, String> parameters = operationsParameters.get(operationName);
+		return new OperationParameters(parameters, entityId);
+	}
+
+	public OperationParameters getParameters(String operationName, String startTime, String endTime) {
+		Map<String, String> parameters = operationsParameters.get(operationName);
+
+		return new OperationParameters(parameters, startTime, endTime);
+	}
+
+	private void add(String key, Object[]... entries) {
+		Map<String, String> parameters = Arrays.stream(entries).collect(Collectors.toMap(kv -> (String) kv[0], kv -> (String) kv[1]));
+		operationsParameters.put(key, parameters);
+	}
+
+	private Object[] entry(Object key, Object value) {
+		return new Object[] {
+				key, value
+		};
+	}
+
+	public class OperationParameters {
+
+		private Map<String, String> parameters;
+
+		private boolean isSingle;
+
+		private String entityId;
+
+		private String startTime;
+
+		private String endTime;
+
+		public OperationParameters(Map<String, String> parameters, String entityId) {
+			this.parameters = parameters;
+			this.entityId = entityId;
+			this.isSingle = true;
+		}
+
+		public OperationParameters(Map<String, String> parameters, String startTime, String endTime) {
+			this.parameters = parameters;
+			this.startTime = startTime;
+			this.endTime = endTime;
+			this.isSingle = false;
+		}
+
+		public String getServiceURI() {
+			return parameters.get(DARWIN_SERVICE_URI);
+		}
+
+		public String getPath() {
+			String path = parameters.get(DARWIN_ENTITY_SET);
+			String parentId = parameters.get("parentID");
+
+			return path + (parentId == null && isSingle ? "(" + entityId + "L)" : "");
+		}
+
+		public String getFilter() {
+			String filter = null;
+			String parentId = parameters.get("parentID");
+
+			if (parentId != null && isSingle) {
+				filter = parentId + " eq " + entityId + "L";
+			}
+			return filter; // path + (isSingle ? "(" + entityId + "L)" : "");
+		}
+
+		public String getDestination() {
+			return parameters.get(DARWIN_ENTITY_DESTINATION);
+		}
+
+		public String getApiRouteId() {
+			return parameters.get("apiRouteId");
+		}
+
+		public String getStartTime() {
+			return startTime;
+		}
+
+		public String getEndTime() {
+			return endTime;
+		}
+
+		public OperationParameters getNextOperationParameters() {
+			OperationParameters next = null;
+			String nextOperation = parameters.get("nextOperation");
+			if (nextOperation != null) {
+				if (isSingle) {
+					next = OperationsParameters.this.getParameters(nextOperation, entityId);
+				} else {
+					next = OperationsParameters.this.getParameters(nextOperation, startTime, endTime);
+				}
+			}
+			return next;
+		}
+
+		public String getTriggerDestination() {
+			return (String) context.getProperty(isSingle ? "activemq_triggerSingle" : "activemq_triggerStartQueue");
+		}
+
+		public String getNextEndpoint() {
+			String nextOperation = parameters.get("nextOperation");
+			return nextOperation != null ? "seda:dispatch" : "direct:stop";
+		}
+
+		public String toString() {
+			StringBuilder builder = new StringBuilder();
+			builder.append("OperationParameters[\n");
+			builder.append("Parameters: " + parameters + "\n");
+			builder.append("isSingle: " + isSingle + "\n");
+			if (isSingle) {
+				builder.append("entityId: " + entityId + "\n");
+			} else {
+				builder.append("start time: " + startTime + ", end time: " + endTime + "\n");
+			}
+			builder.append("]\n");
+			return builder.toString();
+		}
+	}
+}

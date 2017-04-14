@@ -1,0 +1,17 @@
+package beans;
+
+import org.apache.camel.Header;
+/**
+ * Methods to extract information from OData-EntityId HTTP response header.
+ */
+public class ODataEntityIdBean {
+
+    /**
+     * 
+     */
+    public static String getId(@Header("OData-EntityId") String uri) {
+    	int start = uri.indexOf('(') + 1;
+    	int end = uri.indexOf(')');
+    	return uri.substring(start, end);
+    }
+}

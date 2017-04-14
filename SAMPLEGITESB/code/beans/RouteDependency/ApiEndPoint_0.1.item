@@ -1,0 +1,53 @@
+package beans;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "API_END_POINT", schema = "dbo", catalog = "DARWIN_ETL")
+@SequenceGenerator(name = "sequence", sequenceName = "API.API_ERROR_SEQ")
+public class ApiEndPoint extends ApiBase {
+
+	public static ApiEndPoint sample() {
+		ApiEndPoint point = new ApiEndPoint();
+		point.endPointId = "endPointId";
+		point.provider = "endPointProvider";
+		point.statusLov = 1;
+		point.sourceSystemLovRid = 1;
+		point.batchJobRid = 1L;
+		point.name = "endPointName";
+		point.display = "endPointDisplay";
+		point.description = "endPointDesc";
+		point.url = "endPointUrl";
+		return point;
+	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+	@Column(name = "API_END_POINT_RID", columnDefinition = "numeric")
+	private Long id;
+
+	@Column(name = "END_POINT_ID", nullable = false, length = 40)
+	private String endPointId;
+
+	@Column(name = "END_POINT_NAME", nullable = false, length = 100)
+	private String name;
+
+	@Column(name = "END_POINT_DISPLAY", nullable = false, length = 100)
+	private String display;
+
+	@Column(name = "END_POINT_DESC", nullable = false, length = 200)
+	private String description;
+
+	@Column(name = "END_POINT_URL", nullable = false, length = 200)
+	private String url;
+
+	@Column(name = "END_POINT_PROVIDER", nullable = false, length = 40)
+	private String provider;
+
+}

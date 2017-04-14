@@ -1,0 +1,34 @@
+package beans;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONValue;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+import static beans.IDs.CRM_ACCOUNT_ID;
+import static beans.IDs.CRM_CONTACT_ID;
+import static beans.KeyContactIDs.CRM_CORE_KEYCONTACT_ID;
+import static beans.KeyContactIDs.CRM_FULL_NAME;
+import static beans.KeyContactIDs.CRM_JOB_TITLE;
+
+/*
+ */
+public class LookupAccountStrategy extends AddHeadersStrategy {
+
+	Map<String, String> prop2Header = new HashMap<String, String>();
+		
+	public LookupAccountStrategy() {
+		prop2Header.put("accountid", CRM_ACCOUNT_ID);
+	}
+		
+	@Override
+	protected String getHeaderName(String property) {
+		return prop2Header.get(property);
+	}
+}

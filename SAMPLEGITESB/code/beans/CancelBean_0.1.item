@@ -1,0 +1,31 @@
+package beans;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+
+import org.apache.camel.Header;
+
+import static beans.IDs.*;
+
+/*
+ * 
+ */
+public class CancelBean {
+	
+	private static final String CANCEL_FLAG = "cancel";
+
+	private Map<String, Boolean> cancelation = new ConcurrentHashMap<String, Boolean>();
+	
+	public void cancel(@Header(DARWIN_PATH) String entitySet) {
+		cancelation.put(entitySet, Boolean.TRUE);
+	}
+	
+	public boolean toBeCanceled(@Header(DARWIN_PATH) String entitySet) {
+		Boolean cancel = cancelation.remove(entitySet);
+		return cancel != null ? cancel : false;
+	}
+	
+	public boolean cancelFlag(@Header(DARWIN_ENTITY_SET_CANCEL)String flag) {
+		return flag != null && flag.equals(CANCEL_FLAG);
+	}
+}

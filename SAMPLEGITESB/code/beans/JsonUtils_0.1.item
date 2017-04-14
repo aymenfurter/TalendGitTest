@@ -1,0 +1,37 @@
+package beans;
+
+import com.jayway.jsonpath.JsonPath;
+import org.apache.camel.Body;
+import org.apache.camel.Exchange;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+
+public class JsonUtils {
+
+	public static final String ID = "JsonUtils";
+	public static final String ASSIGN_ODATA_BIND_ATTRIBUTES = "assignOdataBindAttributes";
+
+	private static final String ODATA_BIND_SUFFIX = "@odata.bind";
+
+	private final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
+
+	public String readStringValue(String json, String path) {
+		LOGGER.warn("Reading string value from {} {}", json, path);
+		String read = JsonPath.read(json, path);
+		return read;
+	}
+
+	public Map<String, String> assignOdataBindAttributes(Exchange exchange, @Body String json) {
+		Map<String, String> jsonValues = JsonPath.read(json, "$");
+		exchange.getIn().getHeaders().entrySet().stream().filter(e -> e.getKey().endsWith(ODATA_BIND_SUFFIX) && e.getValue() != null).forEach(e -> jsonValues.put(e.getKey(), e.getValue().toString()));
+		exchange.getProperties().entrySet().stream().filter(e -> e.getKey().endsWith(ODATA_BIND_SUFFIX) && e.getValue() != null).forEach(e -> jsonValues.put(e.getKey(), e.getValue().toString()));
+		return jsonValues;
+	}
+	public String convertJsonOdataBind(Exchange exchange, @Body String json) {
+		String replaceString = json.replace("_odata.bind", ODATA_BIND_SUFFIX);
+		return replaceString;
+	}
+
+}

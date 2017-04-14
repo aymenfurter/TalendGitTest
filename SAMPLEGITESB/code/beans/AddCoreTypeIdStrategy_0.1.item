@@ -1,0 +1,39 @@
+package beans;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+import static beans.IDs.CRM_CORE_TYPE_ID;
+import static beans.IDs.CRM_CORE_SUB_TYPE_ID;
+
+/**
+ * Adds the headers 'CrmCore_typeid' and 'CrmCore_subtypeid' of the lookup exchange to the original exchange.
+ * 
+ * 	public static final String CORE_TYPE_ID = "CrmCore_typeid";
+
+	public static final String CORE_SUB_TYPE_ID = "CrmCore_subtypeid";
+ */
+public class AddCoreTypeIdStrategy implements AggregationStrategy {
+	
+	@Override
+	public Exchange aggregate(Exchange origExchange, Exchange lookupExchange) {
+		Message origIn = origExchange.getIn();
+		Message lookupIn = lookupExchange.getIn();
+
+		String coreTypeId = lookupIn.getHeader(CRM_CORE_TYPE_ID, String.class);
+		String coreSubTypeId = lookupIn.getHeader(CRM_CORE_SUB_TYPE_ID, String.class);
+
+		if (coreTypeId != null) {
+			origIn.setHeader(CRM_CORE_TYPE_ID, coreTypeId);
+		}
+
+
+		if (coreSubTypeId != null) {
+			origIn.setHeader(CRM_CORE_SUB_TYPE_ID, coreSubTypeId);
+		}
+
+		return origExchange;
+	}
+}
+

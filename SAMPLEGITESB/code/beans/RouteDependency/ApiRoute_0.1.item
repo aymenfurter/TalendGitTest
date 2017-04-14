@@ -1,0 +1,123 @@
+package beans;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "API_ROUTE", schema = "dbo", catalog = "DARWIN_ETL")
+@SequenceGenerator(name = "sequence", sequenceName = "API.API_ERROR_SEQ")
+@NamedQueries({
+		@NamedQuery(name = "ApiRoute.pendingRouteExecution", query = "from ApiRoute where nextRun < current_date()"),
+		@NamedQuery(name = "ApiRoute.findByRouteId", query = "from ApiRoute where routeId = :routeId")
+})
+public class ApiRoute extends ApiBase {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+	@Column(name = "API_ROUTE_RID", columnDefinition = "numeric")
+	private Long id;
+
+	@Column(name = "ROUTE_ID", nullable = false, length = 40)
+	private String routeId;
+
+	@Column(name = "ROUTE_NAME", nullable = false, length = 100)
+	private String name;
+
+	@Column(name = "ROUTE_DISPLAY", nullable = false, length = 100)
+	private String display;
+
+	@Column(name = "ROUTE_DESC", nullable = false, length = 200)
+	private String description;
+
+	@Column(name = "NEXT_RUN_CONTROL_DATE", nullable = false)
+	private Timestamp nextRun;
+
+	@Column(name = "PREV_RUN_CONTROL_DATE", nullable = true)
+	private Timestamp previousRun;
+
+	@Column(name = "LAST_SUCCESSFUL_APIRTEX_RID", nullable = true, columnDefinition = "numeric")
+	private Long lastSuccessfulApirtexRid;
+
+	@Column(name = "PARALLEL_EXECUTION_FLAG", columnDefinition = "numeric")
+	private Boolean parallelExecution;
+
+	@Column(name = "EXECUTION_SEQUENCE", nullable = true, columnDefinition = "numeric")
+	private Long executionSequence;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "SOURCE_APIEP_RID", referencedColumnName = "API_END_POINT_RID")
+	private ApiEndPoint sourceEndpoint;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "TARGET_APIEP_RID", referencedColumnName = "API_END_POINT_RID")
+	private ApiEndPoint targetEndpoint;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "PARENT_API_ROUTE_RID", referencedColumnName = "API_ROUTE_RID")
+	private ApiRoute parentRoute;
+
+	@JoinColumn(name = "PARENT_API_ROUTE_RID", referencedColumnName = "API_ROUTE_RID")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<ApiRoute> childRoutes;
+
+	public ApiRoute() {
+	}
+
+	public ApiRoute(String routeId) {
+		this.routeId = routeId;
+		name = routeId;
+		display = routeId;
+		description = routeId;
+		statusLov = 1;
+		sourceSystemLovRid = 1;
+		batchJobRid = 1L;
+		nextRun = new Timestamp(System.currentTimeMillis());
+	}
+
+	public ApiRoute(String routeId, String batchJobRid) {
+		this(routeId);
+		this.batchJobRid = Long.valueOf(batchJobRid);
+	}
+
+	public ApiRoute(String routeId, ApiRoute parent) {
+		this(routeId);
+		parent.addChildRoute(this);
+		this.parentRoute = parent;
+	}
+
+	public void addChildRoute(ApiRoute childRoute) {
+		if (childRoutes == null) {
+			childRoutes = new ArrayList<ApiRoute>();
+		}
+		childRoutes.add(childRoute);
+	}
+
+	public String getRouteId() {
+		return routeId;
+	}
+
+	public List<ApiRoute> getChildRoutes() {
+		return childRoutes;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+}

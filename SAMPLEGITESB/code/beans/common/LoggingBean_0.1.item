@@ -1,0 +1,22 @@
+package beans;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.Handler;
+import org.apache.camel.jsonpath.JsonPath;
+import org.apache.log4j.MDC;
+
+public class LoggingBean {
+	
+	public static final String ID = "LoggingBean";
+	public static final String API_RID = "ApiRid";
+	
+	public static LoggingBean create(CamelContext context) {
+		context.setUseMDCLogging(true);
+		return new LoggingBean();
+	}
+   
+	@Handler
+    public void init(@JsonPath(API_RID) String apiRid) {
+    	MDC.put(API_RID, apiRid);
+    }
+}

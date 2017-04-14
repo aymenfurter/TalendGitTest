@@ -1,0 +1,108 @@
+package beans;
+
+import java.io.Serializable;
+
+import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
+import org.apache.camel.dataformat.bindy.annotation.DataField;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+
+@CsvRecord(separator="~")
+
+public class ComplainSAPResponse {
+    private static final long serialVersionUID = -691549805449392193L;
+
+	@DataField(pos = 1)
+	private String lineItem;
+	@DataField(pos = 2)
+	private String orderType;
+	
+	@DataField(pos = 3)
+	private String errorID;
+	@DataField(pos = 4)
+	private String errorDesc;
+	@DataField(pos = 5)
+	private String chemicalErrorDesc;
+	@DataField(pos = 6)
+	private String seedErrorDesc;
+	@DataField(pos = 7)
+	private String hasChemicalFailed;
+	@DataField(pos = 8)
+	private String hasSeedFailed;
+	@DataField(pos = 9)
+	private String isAllSuccess;
+	@DataField(pos = 10)
+	private String hasChemicalSucceed;
+	@DataField(pos = 11)
+	private String hasSeedSucceed;
+
+	
+	public String getIsAllSuccess() {
+		return isAllSuccess;
+	}
+	public void setIsAllSuccess(String isAllSuccess) {
+		this.isAllSuccess = isAllSuccess;
+	}
+	public String getHasChemicalSucceed() {
+		return hasChemicalSucceed;
+	}
+	public void setHasChemicalSucceed(String hasChemicalSucceed) {
+		this.hasChemicalSucceed = hasChemicalSucceed;
+	}
+	public String getHasSeedSucceed() {
+		return hasSeedSucceed;
+	}
+	public void setHasSeedSucceed(String hasSeedSucceed) {
+		this.hasSeedSucceed = hasSeedSucceed;
+	}
+	public String getLineItem() {
+		return lineItem;
+	}
+	public void setLineItem(String lineItem) {
+		this.lineItem = lineItem;
+	}
+	public String getOrderType() {
+		return orderType;
+	}
+	public void setOrderType(String orderType) {
+		this.orderType = orderType;
+	}
+	public String getErrorID() {
+		return errorID;
+	}
+	public void setErrorID(String errorID) {
+		this.errorID = errorID;
+	}
+	public String getErrorDesc() {
+		return errorDesc;
+	}
+	public void setErrorDesc(String errorDesc) {
+		this.errorDesc = errorDesc;
+	}
+	public String getChemicalErrorDesc() {
+		return chemicalErrorDesc;
+	}
+	public void setChemicalErrorDesc(String chemicalErrorDesc) {
+		this.chemicalErrorDesc = chemicalErrorDesc;
+	}
+	public String getSeedErrorDesc() {
+		return seedErrorDesc;
+	}
+	public void setSeedErrorDesc(String seedErrorDesc) {
+		this.seedErrorDesc = seedErrorDesc;
+	}
+	public String getHasChemicalFailed() {
+		return hasChemicalFailed;
+	}
+	public void setHasChemicalFailed(String hasChemicalFailed) {
+		this.hasChemicalFailed = hasChemicalFailed;
+	}
+	public String getHasSeedFailed() {
+		return hasSeedFailed;
+	}
+	public void setHasSeedFailed(String hasSeedFailed) {
+		this.hasSeedFailed = hasSeedFailed;
+	}
+
+}

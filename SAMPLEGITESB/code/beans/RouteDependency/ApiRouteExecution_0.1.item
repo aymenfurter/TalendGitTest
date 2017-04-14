@@ -1,0 +1,131 @@
+package beans;
+
+import java.beans.Transient;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "API_ROUTE_EXECUTION", schema = "dbo", catalog = "DARWIN_ETL")
+@SequenceGenerator(name = "sequence", sequenceName = "API.API_ERROR_SEQ")
+@NamedQueries({
+		@NamedQuery(name = "ApiRouteExecution.incrementSucceded", query = "update ApiRouteExecution e set e.recordsProcessed = e.recordsProcessed + 1, e.recordsSucceded = e.recordsSucceded + 1, e.updated = current_timestamp where e.batchJobRid = :batchJobRid and e.route = (from ApiRoute where routeId = :routeId)"),
+		@NamedQuery(name = "ApiRouteExecution.incrementFailures", query = "update ApiRouteExecution e set e.recordsProcessed = e.recordsProcessed + 1, e.recordsFailed = e.recordsFailed + 1, e.updated = current_timestamp where e.batchJobRid = :batchJobRid and e.route = (from ApiRoute where routeId = :routeId)"),
+		@NamedQuery(name = "ApiRouteExecution.decrementFailures", query = "update ApiRouteExecution e set e.recordsFailed = e.recordsFailed - 1, e.updated = current_timestamp where e.batchJobRid = :batchJobRid and e.route = (from ApiRoute where routeId = :routeId)"),
+		@NamedQuery(name = "ApiRouteExecution.findFinished", query = "from ApiRouteExecution e where e.recordsProcessed >= e.recordsAvailable and e.updatedBy != 'CompletionProcess'"),
+		@NamedQuery(name = "ApiRouteExecution.findByBatchJobRid", query = "from ApiRouteExecution where batchJobRid = :batchJobRid and route.routeId = :routeId")
+})
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "ApiRouteExecution.findNextExecutionDates", query = "SELECT r.ROUTE_ID, ISNULL(x.EXECUTION_END_DATE, current_timestamp - 1) AS EXECUTION_START_DATE, CURRENT_TIMESTAMP AS EXECUTION_END_DATE FROM API_ROUTE r LEFT JOIN (SELECT e.* FROM API_ROUTE_EXECUTION e JOIN API_ROUTE r ON e.API_ROUTE_RID = r.API_ROUTE_RID WHERE e.EXECUTION_END_DATE = (SELECT max(x.EXECUTION_END_DATE) FROM API_ROUTE_EXECUTION x WHERE e.API_ROUTE_RID = x.API_ROUTE_RID GROUP BY x.API_ROUTE_RID) AND r.PARENT_API_ROUTE_RID IS NULL) x ON r.API_ROUTE_RID = x.API_ROUTE_RID WHERE r.PARENT_API_ROUTE_RID IS NULL AND r.STATUS_LOV_RID = 1900000022"),
+	@NamedNativeQuery(name = "ApiRouteExecution.findNextExecutionStartDateByRouteId", query = "SELECT ISNULL(MAX(e.EXECUTION_END_DATE), current_timestamp - 1) AS EXECUTION_START_DATE FROM API_ROUTE_EXECUTION e JOIN API_ROUTE r ON e.API_ROUTE_RID = r.API_ROUTE_RID WHERE r.ROUTE_ID = :routeId")
+})
+public class ApiRouteExecution extends ApiBase {
+
+	private static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+	private static final String ENCODING = "UTF-8";
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+	@Column(name = "API_ROUTE_EXECUTION_RID", columnDefinition = "numeric")
+	private Long id;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "API_ROUTE_RID", referencedColumnName = "API_ROUTE_RID")
+	private ApiRoute route;
+
+	@Column(name = "EXECUTION_START_DATE", nullable = true)
+	private Timestamp executionStartDate;
+
+	@Column(name = "EXECUTION_END_DATE", nullable = true)
+	private Timestamp executionEndDate;
+
+	@Column(name = "RECORDS_AVAILABLE", nullable = true, columnDefinition = "numeric")
+	private Long recordsAvailable = 0L;
+
+	@Column(name = "RECORDS_PROCESSED", nullable = true, columnDefinition = "numeric")
+	private Long recordsProcessed = 0L;
+
+	@Column(name = "RECORDS_SUCCEDED", nullable = true, columnDefinition = "numeric")
+	private Long recordsSucceded = 0L;
+
+	@Column(name = "RECORDS_FAILED", nullable = true, columnDefinition = "numeric")
+	private Long recordsFailed = 0L;
+
+	public ApiRouteExecution() {
+	}
+
+	public ApiRouteExecution(String batchJobRid, ApiRoute route, String executionStartDate, String executionEndDate, int recordsAvailable) throws Exception {
+		this.batchJobRid = Long.valueOf(batchJobRid);
+		this.route = route;
+		this.executionStartDate = parseEncodedTimestamp(executionStartDate);
+		this.executionEndDate = parseEncodedTimestamp(executionEndDate);
+		this.recordsAvailable = Long.valueOf(recordsAvailable);
+	}
+
+	private Timestamp parseEncodedTimestamp(String timestamp) throws Exception {
+		String decoded = URLDecoder.decode(timestamp, ENCODING);
+		Date date = new SimpleDateFormat(PATTERN).parse(decoded);
+		return new Timestamp(date.toInstant().toEpochMilli());
+	}
+
+	public static String format(Timestamp timestamp) throws Exception {
+		String plain = new SimpleDateFormat(PATTERN).format(timestamp);
+		return URLEncoder.encode(plain, ENCODING);
+	}
+
+	public ApiRoute getRoute() {
+		return route;
+	}
+
+	public Timestamp getExecutionStartDate() {
+		return executionStartDate;
+	}
+
+	public Timestamp getExecutionEndDate() {
+		return executionEndDate;
+	}
+
+	@Transient
+	public String getExecutionStartDateFormatted() throws Exception {
+		return format(executionStartDate);
+	}
+
+	@Transient
+	public String getExecutionEndDateFormatted() throws Exception {
+		return format(executionEndDate);
+	}
+
+	@Transient
+	public String getApiRouteId() {
+		return route.getRouteId();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public ApiRouteExecution markAsPickedUpByCompletionProcess() {
+		this.updated = new Timestamp(System.currentTimeMillis());
+		this.updatedBy = "CompletionProcess";
+		return this;
+	}
+
+}

@@ -1,0 +1,87 @@
+package beans;
+
+import java.net.Proxy;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import com.microsoft.aad.adal4j.AuthenticationContext;
+import com.microsoft.aad.adal4j.AuthenticationResult;
+
+
+/**
+ * OAuth authentication for Dynamic CRM agaianst Active Directory in Azure Cloud.
+ **/
+public class AzureAD {
+
+	private AuthenticationContext authContext = null;
+	private AuthenticationResult auth = null;
+	private String authority = null;
+	private String resource = null;
+	private String clientId = null;
+	private String username = null;
+	private String password = null;
+	private Proxy proxy = null;
+
+	public AzureAD(String authority, String resource, String clientId, String username, String password) {
+		this(authority, resource, clientId, username, password, null);
+	}
+
+	public AzureAD(String authority, String resource, String clientId, String username, String password, Proxy proxy) {
+		this.authority = authority;
+		this.resource = resource;
+		this.clientId = clientId;
+		this.username = username;
+		this.password = password;
+		this.proxy = proxy;
+	}
+
+
+	public void init() {
+		authenticate();
+	}
+
+    public void authenticate() {
+
+    	ExecutorService service = null;
+    	try {
+    	    service = Executors.newFixedThreadPool(1);
+    	    this.authContext = new AuthenticationContext(authority, false, service);
+
+    	    if (proxy != null) {
+    	        authContext.setProxy(proxy);
+    	    }
+
+    	    Future<AuthenticationResult> future = authContext.acquireToken(resource,
+    	    		clientId,
+    	    		username,
+    	    		password, null);
+    	    this.auth = future.get();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}finally {
+    	    service.shutdown();
+    	}
+    }
+
+    public void refresh() {
+    	ExecutorService service = null;
+    	try {
+    	    service = Executors.newFixedThreadPool(1);
+    	    Future<AuthenticationResult> future = authContext.acquireTokenByRefreshToken(auth.getRefreshToken(),
+    	    		clientId,
+    	    		null,
+    	    		null);
+    	    this.auth = future.get();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		authenticate();
+    	}finally {
+    	    service.shutdown();
+    	}
+    }
+
+    public String getAccessToken() {
+    	return auth.getAccessToken();
+    }
+}

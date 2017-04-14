@@ -1,0 +1,105 @@
+package beans;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Parameter;
+import javax.persistence.Query;
+
+import org.apache.camel.Body;
+import org.apache.camel.CamelContext;
+import org.apache.camel.Header;
+import org.apache.camel.Headers;
+import org.apache.camel.dataformat.xstream.XStreamDataFormat;
+import org.apache.camel.language.Bean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.mapper.MapperWrapper;
+
+public class JpaHelper {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(JpaHelper.class);
+
+	public static final String QUERY_MODE_HEADER = "JpaHelperQueryMode";
+	public static final String NAMED_QUERY_PARAMETER_PREFIX = "JpqlNameParameter_";
+	public static final String NAME_QUERY_NAME = "JpqlNamedQuery";
+
+	public static enum QueryMode {
+		SINGLE, MULTIPLE, UPDATE
+	}
+
+	public static XStreamDataFormat xStreamDataFormat() {
+		final XStream xStream = new XStream() {
+			@Override
+			protected MapperWrapper wrapMapper(MapperWrapper next) {
+				return new com.thoughtworks.xstream.hibernate.mapper.HibernateMapper(next);
+			}
+		};
+		xStream.registerConverter(new com.thoughtworks.xstream.hibernate.converter.HibernateProxyConverter());
+		xStream.registerConverter(new com.thoughtworks.xstream.hibernate.converter.HibernatePersistentCollectionConverter(xStream.getMapper()));
+
+		xStream.autodetectAnnotations(true);
+		XStreamDataFormat dataFormat = new XStreamDataFormat(xStream);
+		dataFormat.setPermissions("beans.*");
+		return dataFormat;
+	}
+
+	public static XStreamDataFormat xStreamDataFormat2() {
+		final XStream xStream = new XStream();
+		xStream.autodetectAnnotations(true);
+		XStreamDataFormat dataFormat = new XStreamDataFormat(xStream);
+		dataFormat.setPermissions("beans.*");
+		return dataFormat;
+	}
+
+	public static String createQueryParameterHeader(String key) {
+		return NAMED_QUERY_PARAMETER_PREFIX + key;
+	}
+
+	public Query createQuery(@Bean(ref = "entityManagerFactory", method = "createEntityManager()") EntityManager entityManager, @Body String jpql) {
+		entityManager.joinTransaction();
+		return entityManager.createQuery(jpql);
+	}
+
+	public Query createNamedQuery(
+			@Bean(ref = "entityManagerFactory", method = "createEntityManager()") EntityManager entityManager,
+			@Header(NAME_QUERY_NAME) String name,
+			@Headers Map<String, Object> headers,
+			CamelContext context) {
+		entityManager.joinTransaction();
+		final Query query = entityManager.createNamedQuery(name);
+		for (Parameter<?> parameter : query.getParameters()) {
+			final String parameterName = parameter.getName();
+			Class<?> queryParameterType = parameter.getParameterType();
+			final String parameterHeaderName = NAMED_QUERY_PARAMETER_PREFIX + parameterName;
+			LOGGER.warn("Processing {} of type {}. Expecting message header with name {}.", parameterName, queryParameterType, parameterHeaderName);
+			final Object value = headers.get(parameterHeaderName);
+			if (!headers.containsKey(parameterHeaderName)) {
+				throw new IllegalArgumentException("The message does not contain the expected header with name " + parameterHeaderName + "!");
+			}
+			LOGGER.warn("Using {} for parameter {}.", value, parameterName);
+			if (queryParameterType == null) {
+				LOGGER.warn("Using String.class as fallback for parameter type.");
+				queryParameterType = String.class;
+			}
+			final Object converted = context.getTypeConverter().convertTo(queryParameterType, value);
+			query.setParameter(parameterName, converted);
+		}
+		return query;
+	}
+
+	public Object executeQuery(@Body Query query, @Header(QUERY_MODE_HEADER) QueryMode singleEntity) {
+		singleEntity = singleEntity == null ? QueryMode.MULTIPLE : singleEntity;
+		switch (singleEntity) {
+		case SINGLE:
+			return ((List<?>) query.getResultList()).stream().findFirst().orElse(null);
+		case UPDATE:
+			return query.executeUpdate();
+		default:
+			return query.getResultList();
+		}
+	}
+}

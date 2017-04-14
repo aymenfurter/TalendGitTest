@@ -1,0 +1,62 @@
+package beans;
+
+import org.apache.camel.component.http4.HttpClientConfigurer;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.Credentials;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.ProxyAuthenticationStrategy;
+
+/**
+ * Configuration for the HTTP4 client component. Currently allow to specify a proxy server.
+ * In future more parameters may be specified here. 
+ */
+public class CRMClientConfigurer implements HttpClientConfigurer {
+
+	private String proxyHost;
+	private int proxyPort;
+	private String scheme;
+	private String proxyUsername;
+	private String proxyPassword;
+
+	public CRMClientConfigurer(String proxyHost, int proxyPort, String scheme) {
+		this(proxyHost, proxyPort, scheme, null, null);
+		//useProxyAuthentication("MZGGY","Sy5t3mPw");
+	}
+
+	public CRMClientConfigurer(String proxyHost, int proxyPort, String scheme, String proxyUsername, String proxyPassword) {
+		this.proxyHost = proxyHost;
+		this.proxyPort = proxyPort;
+		this.scheme = scheme;
+		this.proxyUsername = proxyUsername;
+		this.proxyPassword = proxyPassword;
+		
+		System.out.println("Using proxy " + proxyHost + " with port " +  proxyPort + ", user " + proxyUsername + " and password" + proxyPassword );
+	}
+
+    @Override
+	public void configureHttpClient(HttpClientBuilder clientBuilder) {
+		if (proxyHost != null && ! proxyHost.trim().isEmpty()) {
+			HttpHost proxy = new HttpHost(proxyHost, proxyPort,  scheme);
+			clientBuilder.setProxy(proxy);
+			useProxyAuthentication(clientBuilder);
+		}
+	}
+    
+    public void useProxyAuthentication(HttpClientBuilder clientBuilder) {
+        if (proxyUsername != null && ! proxyUsername.trim().isEmpty() && proxyPassword != null && !proxyPassword.trim().isEmpty()) {
+        	
+        	System.out.println("Access to proxy is authenticated.");
+        	Credentials credentials = new UsernamePasswordCredentials(proxyUsername, proxyPassword);
+        	AuthScope authScope = new AuthScope(proxyHost, proxyPort);
+        	CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        	credsProvider.setCredentials(authScope, credentials);
+        	
+        	clientBuilder.setDefaultCredentialsProvider(credsProvider);
+        	clientBuilder.setProxyAuthenticationStrategy(new ProxyAuthenticationStrategy());
+        }
+    }
+}

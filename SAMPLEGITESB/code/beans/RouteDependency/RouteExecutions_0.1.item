@@ -1,0 +1,77 @@
+package beans;
+
+import java.net.URLEncoder;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.ExchangeProperty;
+import org.apache.camel.Header;
+import org.apache.camel.jsonpath.JsonPath;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class RouteExecutions {
+
+	private final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
+
+	public static final String ASSERT_NO_PENDING_PARENT_RESOURCE_PROCESSING = "maybeThrow";
+
+	public static class FailedParentException extends RuntimeException {
+
+		private static final long serialVersionUID = 332223638942345239L;
+
+		public FailedParentException(String message) {
+			super(message);
+		}
+	}
+
+	public void maybeThrow(boolean parentMatchingResourceWithErrorsExists, @Header("parentId") String parentId) {
+		if (parentMatchingResourceWithErrorsExists) {
+			throw new FailedParentException("There is a pending parent route execution containing a resource with id " + parentId + "!");
+		}
+	}
+
+	public ApiRouteExecution newRouteExecution(
+			@JsonPath("$.batchId") String batchJobRid,
+			@JsonPath("$.executionStartDate") String executionStartDate,
+			@JsonPath("$.executionEndDate") String executionEndDate,
+			@JsonPath("$.batchCount") int count,
+			@ExchangeProperty("Route") ApiRoute route) throws Exception {
+		LOGGER.warn("Creating new execution for id " + batchJobRid + ".");
+		return new ApiRouteExecution(batchJobRid, route, executionStartDate, executionEndDate, count);
+	}
+
+	public ApiRouteError createError(
+			@JsonPath("$.entityId") Long entityId,
+			@JsonPath("$.parentEntityId") String parentEntityId,
+			@JsonPath("$.status") String status,
+			@JsonPath("$.errorCode") String code,
+			@ExchangeProperty("DecodedErrorMessage") String message,
+			@ExchangeProperty("Execution") ApiRouteExecution execution,
+			@ExchangeProperty("Error") ApiRouteError error) {
+		LOGGER.warn("Creating new error for id " + execution.getId() + ".");
+		Long id = null;
+		if (!parentEntityId.isEmpty()) {
+			id = Long.valueOf(parentEntityId);
+		}
+		if (error != null) {
+			return error.retryAttemptFailed(message);
+		}
+		return new ApiRouteError(execution, entityId, id, code, message);
+	}
+
+	private static final String PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+	private static final String ENCODING = "UTF-8";
+
+	public static String format(Timestamp timestamp) throws Exception {
+		String plain = new SimpleDateFormat(PATTERN).format(timestamp);
+		return URLEncoder.encode(plain, ENCODING);
+	}
+
+	public void formatTimestamps(@Header("executionStartDate") Timestamp start, @Header("executionEndDate") Timestamp end, Exchange e) throws Exception {
+		e.getIn().setHeader("executionStartDate", format(start));
+		e.getIn().setHeader("executionEndDate", format(end));
+	}
+
+}

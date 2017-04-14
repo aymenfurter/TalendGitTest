@@ -1,0 +1,245 @@
+package beans;
+
+import java.io.Serializable;
+
+import org.apache.camel.dataformat.bindy.annotation.DataField;
+import org.apache.camel.dataformat.bindy.annotation.FixedLengthRecord;
+
+@FixedLengthRecord(length = 449, paddingChar = ' ')
+public class ComplaintManagement implements Serializable {
+
+	/** Generated UUID. */
+	private static final long serialVersionUID = -691549805449392192L;
+
+	@DataField(pos = 1, length = 4, align = "L")
+	private String Sales_Org;
+
+	@DataField(pos = 2, length = 2, align = "L")
+	private String Distribution_Channel;
+
+	@DataField(pos = 3, length = 35, align = "L")
+	private String PD_Number;
+
+	@DataField(pos = 4, length = 35, align = "L")
+	private String Product_Brand_Name;
+
+	@DataField(pos = 5, length = 10, align = "R", paddingChar = '0')
+	private String Sold_To;
+
+	@DataField(pos = 6, length = 10, align = "R", paddingChar = '0')
+	private String Ship_To;
+
+	@DataField(pos = 7, length = 40, align = "L")
+	private String Ship_To_Name;
+
+	@DataField(pos = 8, length = 60, align = "L")
+	private String Ship_To_Address;
+
+	@DataField(pos = 9, length = 10, align = "L")
+	private String Ship_To_PostalCode;
+
+	@DataField(pos = 10, length = 40, align = "L")
+	private String Ship_To_City;
+
+	@DataField(pos = 11, length = 3, align = "L")
+	private String Ship_To_Province;
+
+//	@DataField(pos = 12, length = 10, align = "L")
+//	private String Grower;
+
+	 @DataField(pos = 12, length = 35 , align="L")
+	 private String Grower_Name;
+
+	@DataField(pos = 13, length = 35, align = "L")
+	private String Grower_Address;
+
+	@DataField(pos = 14, length = 35, align = "L")
+	private String Grower_City;
+
+	@DataField(pos = 15, length = 10, align = "L")
+	private String Grower_PostalCode;
+
+	@DataField(pos = 16, length = 3, align = "L")
+	private String Grower_Province;
+
+	@DataField(pos = 17, length = 16, align = "L")
+	private String Grower_Phone_Number;
+
+	@DataField(pos = 18, length = 18, align = "R", paddingChar = '0')
+	private String Material_Number;
+
+	@DataField(pos = 19, length = 13, align = "L")
+	private String Material_Quantity;
+
+	@DataField(pos = 20, length = 25, align = "L", clip = true)
+	private String Order_Reason;
+
+	public String getSales_Org() {
+		return Sales_Org;
+	}
+
+	public void setSales_Org(String sales_Org) {
+		Sales_Org = sales_Org;
+	}
+
+	public String getDistribution_Channel() {
+		return Distribution_Channel;
+	}
+
+	public void setDistribution_Channel(String distribution_Channel) {
+		Distribution_Channel = distribution_Channel;
+	}
+
+	public String getPD_Number() {
+		return PD_Number;
+	}
+
+	public void setPD_Number(String pD_Number) {
+		PD_Number = pD_Number;
+	}
+
+	public String getProduct_Brand_Name() {
+		return Product_Brand_Name;
+	}
+
+	public void setProduct_Brand_Name(String product_Brand_Name) {
+		Product_Brand_Name = product_Brand_Name;
+	}
+
+	public String getSold_To() {
+		return Sold_To;
+	}
+
+	public void setSold_To(String sold_To) {
+		Sold_To = sold_To;
+	}
+
+	public String getShip_To() {
+		return Ship_To;
+	}
+
+	public void setShip_To(String ship_To) {
+		Ship_To = ship_To;
+	}
+
+	public String getShip_To_Name() {
+		return Ship_To_Name;
+	}
+
+	public void setShip_To_Name(String ship_To_Name) {
+		Ship_To_Name = ship_To_Name;
+	}
+
+	public String getShip_To_Address() {
+		return Ship_To_Address;
+	}
+
+	public void setShip_To_Address(String ship_To_Address) {
+		Ship_To_Address = ship_To_Address;
+	}
+
+	public String getShip_To_PostalCode() {
+		return Ship_To_PostalCode;
+	}
+
+	public void setShip_To_PostalCode(String ship_To_PostalCode) {
+		Ship_To_PostalCode = ship_To_PostalCode;
+	}
+
+	public String getShip_To_City() {
+		return Ship_To_City;
+	}
+
+	public void setShip_To_City(String ship_To_City) {
+		Ship_To_City = ship_To_City;
+	}
+
+	public String getShip_To_Province() {
+		return Ship_To_Province;
+	}
+
+	public void setShip_To_Province(String ship_To_Province) {
+		Ship_To_Province = ship_To_Province;
+	}
+
+	public String getGrower() {
+		return "";
+	}
+
+	public void setGrower(String grower) {
+//		Grower = grower;
+	}
+
+	public String getGrower_Name() {
+		return this.Grower_Name;
+	}
+
+	public void setGrower_Name(String grower_Name) {
+		 Grower_Name = grower_Name;
+	}
+
+	public String getGrower_Address() {
+		return Grower_Address;
+	}
+
+	public void setGrower_Address(String grower_Address) {
+		Grower_Address = grower_Address;
+	}
+
+	public String getGrower_City() {
+		return Grower_City;
+	}
+
+	public void setGrower_City(String grower_City) {
+		Grower_City = grower_City;
+	}
+
+	public String getGrower_PostalCode() {
+		return Grower_PostalCode;
+	}
+
+	public void setGrower_PostalCode(String grower_PostalCode) {
+		Grower_PostalCode = grower_PostalCode;
+	}
+
+	public String getGrower_Province() {
+		return Grower_Province;
+	}
+
+	public void setGrower_Province(String grower_Province) {
+		Grower_Province = grower_Province;
+	}
+
+	public String getGrower_Phone_Number() {
+		return Grower_Phone_Number;
+	}
+
+	public void setGrower_Phone_Number(String grower_Phone_Number) {
+		Grower_Phone_Number = grower_Phone_Number;
+	}
+
+	public String getMaterial_Number() {
+		return Material_Number;
+	}
+
+	public void setMaterial_Number(String material_Number) {
+		Material_Number = material_Number;
+	}
+
+	public String getMaterial_Quantity() {
+		return Material_Quantity;
+	}
+
+	public void setMaterial_Quantity(String material_Quantity) {
+		Material_Quantity = material_Quantity;
+	}
+
+	public String getOrder_Reason() {
+		return Order_Reason;
+	}
+
+	public void setOrder_Reason(String order_Reason) {
+		Order_Reason = order_Reason;
+	}
+
+}

@@ -1,0 +1,79 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <title>Talend Integration Routes</title>
+    <style>
+      form {
+	    width: 30em;
+      }
+
+input {
+	padding: .5em;
+	
+	border: 1px solid;  <!-- #e7c157; -->
+	width: 18em;
+}
+
+label {
+	display: inline-block;
+	width: 12em;
+	margin-bottom: 1em;
+	line-height: 2em;
+	text-align: right;
+}
+
+label::after {
+	content: ": ";
+}
+
+<!--
+button {
+   display:block;
+   width:100px;
+   margin:0 auto;
+}
+-->
+
+button {
+	margin-left: 14.8em;
+	width: 10em;
+	margin-bottom: 1em;
+}
+
+    </style>
+  </head>
+
+  <body>
+
+    <form action="./process" method="get">
+	  <label for="operation">Operation</label>
+	  <select name="operation">
+        <option value="CONTACT_CORE_US">Contact Core</option>
+        <!-- Comment the following line if dependency management is enabled. -->
+        <option value="ORGANIZATION_ACCOUNT_US">Organization / Account</option>
+        <!-- Comment the following line if dependency management is enabled. -->
+        <option value="CORE_KEY_CONTACT">Organization-Contact</option>       
+        <option value="ORGANIZATION_RELATIONSHIP">Organization Relationship</option>
+        <option value="CROP_MASTER">USHierarchys-Cropping Master Data</option>
+        <option value="TERRITORY_HIERARCHY">Territory Hierarchy</option>
+        <option value="CROP_AREA">Crop Area Detail</option>
+        <option value="MATERIAL_CORE_US">Material</option>
+        <!--<option value="MaterialChildren">Material Children</option>-->
+        <option value="US_NATIONAL_HIERARCHY">Organization Hierarchy and Grouping</option>
+        <option value="SALES">Sales Data</option>
+      </select>
+	  <br/>
+
+	  <label for="startDateTime">Start Date / Time</label>
+	  <input type="text" value="2017-01-20T00:00:00" name="startDateTime"/>
+	  
+	  <label for="endDateTime">End Date / Time </label>
+  	  <input type="text" value="2017-01-22T23:58:00" name="endDateTime"/>
+	  
+	  <label for="entityId">Entity Id </label>
+  	  <input type="text" value="1234567890" name="entityId"/>
+	  
+      <button type="submit">Run</button>
+    </form>
+  </body>
+</html>

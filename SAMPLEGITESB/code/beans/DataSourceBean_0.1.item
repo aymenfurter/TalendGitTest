@@ -1,0 +1,19 @@
+package beans;
+
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSource;
+
+public class DataSourceBean {
+
+	public static DataSource init(Properties properties, boolean container) {
+		final BasicDataSource dataSource = new BasicDataSource();
+		dataSource.setUrl(properties.getProperty("datasource_url"));
+		dataSource.setUsername(properties.getProperty("datasource_username"));
+		dataSource.setPassword(properties.getProperty("datasource_username"));
+		return dataSource;
+	}
+
+}

@@ -1,0 +1,160 @@
+package beans;
+
+import java.net.Authenticator;
+import java.net.Authenticator.RequestorType;
+import java.net.PasswordAuthentication;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
+import com.microsoft.aad.adal4j.AuthenticationContext;
+import com.microsoft.aad.adal4j.AuthenticationResult;
+
+
+/**
+ * OAuth authentication for Dynamic CRM against Active Directory in Azure Cloud.
+ **/
+public class AzureAD {
+	
+	public static void useProxyAuthentication(String username, String password) {
+		if(username != null && !username.trim().isEmpty() && password != null && !password.trim().isEmpty()) {
+			Authenticator.setDefault(new ProxyAuthentication(username, password));
+			System.setProperty("http.proxyUser", username);
+			System.setProperty("http.proxyPassword", password);
+		}
+	}
+	
+	public static class ProxyAuthentication extends Authenticator {				
+		
+		private final String username;
+		private final String password;
+		
+		public ProxyAuthentication(String username, String password) {
+			super();
+			this.username = username;
+			this.password = password;
+		}
+
+		public PasswordAuthentication getPasswordAuthentication() {
+			System.out.println("getPasswordAuthentication");
+            return (new PasswordAuthentication(username, password.toCharArray()));
+        }
+
+		@Override
+		protected URL getRequestingURL() {
+			return super.getRequestingURL();
+		}
+
+		@Override
+		protected RequestorType getRequestorType() {
+			return super.getRequestorType();
+		}
+		
+	}
+
+	private ExecutorService service = null;
+
+	private AuthenticationContext authContext = null;
+	private AuthenticationResult auth = null;
+	private String authority = null;
+	private String resource = null;
+	private String clientId = null;
+	private String username = null;
+	private String password = null;
+	private Proxy proxy = null;
+	private static String CRMAccessToken;
+	public AzureAD(){
+		
+	}
+	public AzureAD(String authority, String resource, String clientId, String username, String password) {
+		this(authority, resource, clientId, username, password, null);
+	}
+
+	public AzureAD(String authority, String resource, String clientId, String username, String password, Proxy proxy) {		
+		this.authority = authority;
+		this.resource = resource;
+		this.clientId = clientId;
+		this.username = username;
+		this.password = password;
+		this.proxy = proxy;
+	}
+
+
+	public void init() {
+		authenticate();
+	}
+
+    public void authenticate() {
+
+    	try {
+    	    service = Executors.newFixedThreadPool(1);
+    	    this.authContext = new AuthenticationContext(authority, false, service);
+    	    if (proxy != null) {
+    	        authContext.setProxy(proxy);
+    	    }
+
+    	    Future<AuthenticationResult> future = authContext.acquireToken(resource,
+    	    		clientId,
+    	    		username,
+    	    		password, null);
+    	    this.auth = future.get();
+    	    System.out.println(auth != null ? "OAuth: Successfully acquired access token" : "OAuth: Failed to acquire toke");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+
+    public void refresh() {
+    	try {
+    	    Future<AuthenticationResult> future = authContext.acquireTokenByRefreshToken(auth.getRefreshToken(),
+    	    		clientId,
+    	    		null,
+    	    		null);
+    	    this.auth = future.get();
+    	    System.out.println(auth != null ? "OAuth: Successfully refreshed access token" : "OAuth: Failed to refresh token");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		authenticate();
+    	}
+    }
+  
+    public String getNewAccessToken() {
+    	if (auth == null) {
+    		authenticate();
+    	} else {
+    		//refresh();
+    		authenticate();
+    	}
+    	return auth.getAccessToken();
+    }
+    
+
+    public String getAccessToken() {
+    	if (auth == null) {
+    		authenticate();
+    	}
+    	return auth.getAccessToken();
+    }
+    
+ 
+
+	public static String getCRMAccessToken() {
+   		System.out.println("Token returned :"+CRMAccessToken);
+		//return IDs.CRM_TOKEN;
+   		return CRMAccessToken;
+	}
+
+	public  void generateAccessToken() {
+		String thisToken;
+       	if (auth == null) {
+    		authenticate();
+    	}
+       	thisToken = auth.getAccessToken();
+       	synchronized (auth) {
+       		CRMAccessToken = thisToken;
+       		System.out.println("Token generated :"+CRMAccessToken);
+		}
+ 	}
+}

@@ -1,0 +1,24 @@
+package beans;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+//import static beans.IDs.CRM_ENTITY_ID;
+import static beans.IDs.CRM_RESULT;
+
+/*
+ */
+public class ResultToBodyStrategy implements AggregationStrategy {
+
+	@Override
+	public Exchange aggregate(Exchange origExchange, Exchange lookupExchange) {
+		Message origIn = origExchange.getIn();
+		Message lookupIn = lookupExchange.getIn();
+		
+		String resultStr = lookupIn.getHeader(CRM_RESULT, String.class);
+		origIn.setBody(resultStr);
+
+		return origExchange;
+	}
+}

@@ -1,0 +1,22 @@
+package beans;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+/*
+ */
+public class RetrieveTokenStrategy implements AggregationStrategy  {
+    /**
+     */
+	@Override
+	public Exchange aggregate(Exchange origExchange, Exchange otherExchange) {
+		Message origIn = origExchange.getIn();
+		Message otherIn = otherExchange.getIn();
+
+		String token = otherIn.getBody(String.class);
+		origIn.setHeader("Authorization", "Bearer " + token);
+		return origExchange;
+	}
+
+}

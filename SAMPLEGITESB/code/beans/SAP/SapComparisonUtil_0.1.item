@@ -1,0 +1,14 @@
+package beans;
+
+import java.util.Arrays;
+
+import org.apache.camel.Header;
+
+public class SapComparisonUtil {
+
+	public String test(@Header("account_name") String header) {
+		String result = Arrays.asList("INTER-AG", "PATERSON GRAIN", "PARRISH & HEIMBECKER LTD").contains(header) ? "02" : "01";
+		return result;
+	}
+
+}

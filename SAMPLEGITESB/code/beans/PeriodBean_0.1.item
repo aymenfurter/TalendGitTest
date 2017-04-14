@@ -1,0 +1,46 @@
+package beans;
+
+import java.time.LocalDateTime;
+/*
+ * 
+ */
+public class PeriodBean {
+
+	private LocalDateTime start;
+
+	private LocalDateTime end;
+
+	public PeriodBean(String startingPoint) {
+		start = LocalDateTime.parse(startingPoint);
+		end = LocalDateTime.now();
+	}
+
+	public PeriodBean(String startingPoint, String endPoint) {
+		start = LocalDateTime.parse(startingPoint);
+		end = LocalDateTime.parse(endPoint);
+	}
+
+	public PeriodBean(LocalDateTime startingPoint, LocalDateTime endPoint) {
+		start = startingPoint;
+		end = endPoint;
+	}
+
+	void nextPeriod() {
+		start = end;
+		end = LocalDateTime.now();
+	}
+	
+	void nextPeriod(String endPoint) {
+		start = end;
+		end =  LocalDateTime.parse(endPoint);
+	}
+
+	public String getStart() {
+		return start.toString();
+	}
+
+	public String getEnd() {
+		return end.toString();
+	}
+
+}

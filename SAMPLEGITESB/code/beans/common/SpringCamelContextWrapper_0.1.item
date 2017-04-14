@@ -1,0 +1,85 @@
+package beans;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+
+import org.apache.camel.impl.CompositeRegistry;
+import org.apache.camel.spi.Registry;
+import org.apache.camel.spring.SpringCamelContext;
+import org.apache.camel.spring.spi.ApplicationContextRegistry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+class SpringCamelContextWrapper {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SpringCamelContextWrapper.class);
+
+    private final SpringCamelContext camelContext;
+    private final List<Properties> propertiesList = new ArrayList<Properties>();
+
+    SpringCamelContextWrapper(SpringCamelContext camelContext) {
+        super();
+        this.camelContext = camelContext;
+    }
+
+    void enableSpringEnvironmentProfile(String environment) {
+        applicationContext().getEnvironment().addActiveProfile(environment);
+    }
+
+    void maybeRegisterSingleton(String name, Object bean) {
+        if (!applicationContext().containsBean(name)) {
+            registerSingleton(name, bean);
+        }
+    }
+
+    void registerProperties(Properties properties) {
+        propertiesList.add(properties);
+    }
+
+    void registerSpringConfigurationClasses(Class<?>... classes) {
+        addRegistry(new ApplicationContextRegistry(createJavaConfig(classes)));
+    }
+
+    private void registerSingleton(String name, Object bean) {
+        LOG.info("Registering singleton with name {}.", name);
+        singletonBeanRegistry().registerSingleton(name, bean);
+    }
+
+    private void addRegistry(Registry newRegistry) {
+        final CompositeRegistry compositeRegistry = new CompositeRegistry();
+        compositeRegistry.addRegistry(newRegistry);
+        compositeRegistry.addRegistry(camelContext.getRegistry());
+        camelContext.setRegistry(compositeRegistry);
+    }
+
+    private AnnotationConfigApplicationContext createJavaConfig(Class<?>... classes) {
+        final AnnotationConfigApplicationContext javaConfig = new AnnotationConfigApplicationContext();
+        for (Properties properties : propertiesList) {
+            javaConfig.getBeanFactory().registerSingleton(properties.toString(), createPropertyPlaceholderConfigurer(properties));
+        }
+        javaConfig.register(classes);
+        javaConfig.setParent(applicationContext());
+        javaConfig.refresh();
+        return javaConfig;
+    }
+
+    private PropertyPlaceholderConfigurer createPropertyPlaceholderConfigurer(Properties properties) {
+        final PropertyPlaceholderConfigurer propertyPlaceholderConfigurer = new PropertyPlaceholderConfigurer();
+        propertyPlaceholderConfigurer.setProperties(properties);
+        return propertyPlaceholderConfigurer;
+    }
+
+    private ConfigurableApplicationContext applicationContext() {
+        return (ConfigurableApplicationContext) camelContext.getApplicationContext();
+    }
+
+    private SingletonBeanRegistry singletonBeanRegistry() {
+        return ((SingletonBeanRegistry) applicationContext().getAutowireCapableBeanFactory());
+    }
+
+}

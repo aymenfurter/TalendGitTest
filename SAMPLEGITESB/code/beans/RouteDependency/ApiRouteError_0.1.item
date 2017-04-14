@@ -1,0 +1,127 @@
+package beans;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedNativeQueries;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "API_ROUTE_ERROR", schema = "dbo", catalog = "DARWIN_ETL")
+@SequenceGenerator(name = "sequence", sequenceName = "API.API_ERROR_SEQ")
+@NamedQueries({
+		@NamedQuery(name = "ApiRouteError.findPending", query = "from ApiRouteError where reprocess = true"),
+		@NamedQuery(name = "ApiRouteError.findChildrenById", query = "select c from ApiRouteError p, ApiRouteError c where p.batchJobRid = c.batchJobRid and c.parentEntityId = p.entityId and p.id = :id"),
+		@NamedQuery(name = "ApiRouteError.findByBatchJobRidAndEntityId", query = "from ApiRouteError e where e.batchJobRid = :batchJobRid and e.entityId = :entityId and e.execution.route.routeId = :routeId"),
+		@NamedQuery(name = "ApiRouteError.findPendingByParentEntityId", query = "select case when count(c) > 0 then 'true' else 'false' end from ApiRoute c where c.routeId = :routeId and c.parentRoute in (select r from ApiRouteError e join e.execution x join x.route r where e.entityId = :parentId)")
+})
+@NamedNativeQueries({
+	@NamedNativeQuery(name = "ApiRouteError.deleteById", query = "delete from API_ROUTE_ERROR where API_ROUTE_ERROR_RID = :id")
+})
+public class ApiRouteError extends ApiBase {
+
+	private static final String ATTEMPT = "reprocess attempt ";
+	private static final String DEFAULT_STATUS = "not reprocessed";
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequence")
+	@Column(name = "API_ROUTE_ERROR_RID", columnDefinition = "numeric")
+	private Long id;
+
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinColumn(name = "API_ROUTE_EXECUTION_RID", referencedColumnName = "API_ROUTE_EXECUTION_RID")
+	private ApiRouteExecution execution;
+
+	@Column(name = "API_RID", nullable = false, precision = 0, columnDefinition = "numeric")
+	private Long entityId;
+
+	@Column(name = "PARENT_API_RID", nullable = true, precision = 0, columnDefinition = "numeric")
+	private Long parentEntityId;
+
+	@Column(name = "ERROR_CODE", nullable = false, length = 100)
+	private String code = "Unknown";
+
+	@Column(name = "ERROR_STATUS", nullable = false, length = 100)
+	private String status = DEFAULT_STATUS;
+
+	@Column(name = "ERROR_DESC", nullable = false, length = 200)
+	private String description = "Unknown";
+
+	@Column(name = "REPROCESS_FLAG", columnDefinition = "numeric")
+	private boolean reprocess = false;
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "API_ROUTE_ERROR_CHILDREN", schema = "API", joinColumns = @JoinColumn(name = "API_ROUTE_ERROR_RID"), inverseJoinColumns = @JoinColumn(name = "CHILD_API_ROUTE_ERROR_RID", insertable = false, updatable = false))
+	private List<ApiRouteError> children = new ArrayList<ApiRouteError>();
+
+	public ApiRouteError() {
+	}
+
+	public ApiRouteError(ApiRouteExecution execution, Long entityId, Long parentEntityId, String code, String message) {
+		this.execution = execution;
+		this.entityId = entityId;
+		this.parentEntityId = parentEntityId;
+		this.batchJobRid = execution.batchJobRid;
+		this.code = code;
+		this.description = message;
+	}
+
+	public ApiRouteError reprocessingStarted() {
+		this.reprocess = false;
+		this.updated = new Timestamp(System.currentTimeMillis());
+		this.updatedBy = "ReprocessErrors";
+		int attempt = 1;
+		if (this.status.contains(ATTEMPT)) {
+			attempt = Integer.valueOf(status.replace(ATTEMPT, "").replace(" failed", "").replace(" in progress", "")) + 1;
+		} else {
+			attempt = 1;
+		}
+		this.status = ATTEMPT + attempt + " in progress";
+		return this;
+	}
+
+	public ApiRouteError retryAttemptFailed(String message) {
+		this.updated = new Timestamp(System.currentTimeMillis());
+		this.updatedBy = "ReprocessErrors";
+		int attempt = 1;
+		if (this.status.contains(ATTEMPT)) {
+			attempt = Integer.valueOf(status.replace(ATTEMPT, "").replace(" failed", "").replace(" in progress", ""));
+		}
+		this.status = ATTEMPT + attempt + " failed";
+		this.description = message;
+		return this;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public ApiRouteExecution getExecution() {
+		return execution;
+	}
+
+	public Long getEntityId() {
+		return entityId;
+	}
+
+	public List<ApiRouteError> getChildren() {
+		return children;
+	}
+
+}

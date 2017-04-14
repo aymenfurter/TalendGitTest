@@ -1,0 +1,86 @@
+package beans;
+
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
+@MappedSuperclass
+public class ApiBase {
+
+	public static final String USER = "TriggerDeltaProcess";
+	
+	public static final String Created = "CompletionProcess";
+	public static final String Pending = "CompletionProcess";
+	public static final String Completed = "CompletionProcess";
+	
+	public static final String USER_PICKUP = "Pickup";
+	
+	public static final int ACTIVE = 1900000022;
+	public static final int DEFAULT_SOURCE_SYSTEM = 1;
+
+	@Column(name = "BATCH_JOB_RID", nullable = false, columnDefinition = "numeric")
+	protected Long batchJobRid;
+
+	@Column(name = "STATUS_LOV_RID", nullable = false)
+	protected int statusLov = ACTIVE;
+
+	@Column(name = "SOURCE_SYSTEM_LOV_RID", nullable = false)
+	protected int sourceSystemLovRid = DEFAULT_SOURCE_SYSTEM;
+
+	@Column(name = "CREATED_DATE", nullable = false)
+	protected Timestamp created = new Timestamp(System.currentTimeMillis());
+
+	@Column(name = "CREATED_BY", nullable = false, length = 20)
+	protected String createdBy = USER;
+
+	@Column(name = "UPDATED_DATE", nullable = false)
+	protected Timestamp updated = new Timestamp(System.currentTimeMillis());
+
+	@Column(name = "UPDATED_BY", nullable = false, length = 20)
+	protected String updatedBy = USER;
+	
+	public void markAsUpdatedBy(String updater) {
+		 this.updated = new Timestamp(System.currentTimeMillis());
+		 this.updatedBy = updater;
+	}
+
+	public static String getUser() {
+		return USER;
+	}
+
+	public Long getBatchJobRid() {
+		return batchJobRid;
+	}
+
+	public int getSourceSystemLovRid() {
+		return sourceSystemLovRid;
+	}
+
+	public int getStatusLov() {
+		return statusLov;
+	}
+
+	public Timestamp getCreated() {
+		return created;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public Timestamp getUpdated() {
+		return updated;
+	}
+
+	public String getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
+
+}

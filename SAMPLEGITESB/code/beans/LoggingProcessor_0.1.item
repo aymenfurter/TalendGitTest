@@ -1,0 +1,39 @@
+package beans;
+
+import java.util.Map.Entry;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Message;
+import org.apache.camel.Processor;
+
+public class LoggingProcessor implements Processor {
+	
+	public LoggingProcessor() {
+		
+	}
+	
+	public LoggingProcessor(Exchange exchange) throws Exception{
+		process(exchange);
+	}
+
+	@Override
+	public void process(Exchange exchange) throws Exception {
+		System.out.println("System id of exchange: "+ System.identityHashCode(exchange));
+		System.out.println("ID of exchange: "+ exchange.getExchangeId());
+		Message inMsg = exchange.getIn();
+
+		System.out.println("Headers of in message in exchange");
+		for(Entry<String, Object> header : inMsg.getHeaders().entrySet()) {
+			System.out.println(header.getKey() + " : " + header.getValue());
+		}
+
+		System.out.println("Type of body: " + (inMsg.getBody() != null ? inMsg.getBody().getClass() : "none"));
+
+		try {
+			System.out.println("body: as String: " + inMsg.getBody(String.class));
+		} catch (ClassCastException e) {
+			System.out.println("body cannot be casted to String.");
+
+		}
+	}
+}

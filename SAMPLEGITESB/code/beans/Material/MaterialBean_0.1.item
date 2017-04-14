@@ -1,0 +1,47 @@
+package beans;
+
+import java.util.HashMap;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.Header;
+
+public class MaterialBean {
+	
+	public static final String ID = MaterialBean.class.getSimpleName();
+	public static final String SET_RESOURCE_ID_HEADER = "setHeader";
+	
+	public void setHeader(@Header(beans.IDs.CRM_ENTITY_ID) String lookupEntityId, @Header("EntityId") String entityId, @Header("ResourceIdHeader") String targetHeader, Exchange exchange) {
+		if(lookupEntityId == null || lookupEntityId.trim().isEmpty()) {
+			exchange.getIn().setHeader(targetHeader, entityId);
+		} else {
+			exchange.getIn().setHeader(targetHeader, lookupEntityId);
+		}
+	}
+
+	@SuppressWarnings("serial")
+	public static class IdentityMap extends HashMap<String, String> {
+
+		public static final String IDENTITY_MAP_ID = "IdentityMap";
+		public static final String ENTRIES_JSON_PATH = "entries";
+		public static final String KEY_JSON_PATH = "key";
+		public static final String VALUE_JSON_PATH = "value";
+		public static final String KEY_HEADER = "IdentityMapKey";
+		public static final String VALUE_HEADER = "IdentityMapValue";
+		public static final String PUT_SIMPLE_EXPRESSION = "${bean:" + IDENTITY_MAP_ID + "?method=put(${header." + KEY_HEADER + "}, ${header." + VALUE_HEADER + "})}";
+		public static final String READ_SIMPLE_EXPRESSION = "${bean:" + IDENTITY_MAP_ID + "?method=get(${header." + KEY_HEADER + "})}";
+		public static final String LOGGING = "Adding ${header." + KEY_HEADER + "} -> ${header." + VALUE_HEADER + "} to identity map.";
+		public static final String ENTRY_PREFIX = "identityMap.";
+		
+		public static String getMapEntrySimpleExpression(String key) {
+			return "${bean:" + IDENTITY_MAP_ID + "?method=get('" + key + "')}";
+		}
+
+		public void apply(Exchange exchange) {
+			for (String key : keySet()) {
+				String headerName = ENTRY_PREFIX + key;
+				String headerValue = get(key);
+				exchange.getIn().setHeader(headerName, headerValue);
+			}
+		}
+	}
+}

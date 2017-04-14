@@ -1,0 +1,119 @@
+package beans;
+
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minidev.json.JSONValue;
+
+import org.apache.camel.Exchange;
+import org.apache.camel.processor.aggregate.AggregationStrategy;
+
+import com.jayway.jsonpath.JsonPath;
+
+public class AggregateSAPError implements AggregationStrategy{
+		 
+	    public Exchange aggregate(Exchange oldEx, Exchange newEx) {
+	        if(oldEx==null){
+	            return newEx;
+	        }
+	        String descSeparator = " : ";
+	        String jsonPathLineItem = "$.lineItem";
+	        String jsonPathErrorID = "$.errorID";
+	        String jsonPathOrderType ="$.orderType";
+	        String jsonPathErrorDesc = "$.errorDesc";
+	        String jsonPathChemicalErrorDesc = "$.chemicalErrorDesc";
+	        String jsonPathSeedErrorDesc = "$.seedErrorDesc";
+	        String jsonHasChemicalFailed = "$.hasChemicalFailed";
+	        String jsonHasSeedFailed = "$.hasSeedFailed";
+	        
+	        
+	        String oldBody = oldEx.getIn().getBody(String.class);
+	        String newBody = newEx.getIn().getBody(String.class);
+	        
+	        String lineItem =  JsonPath.read(oldBody, jsonPathLineItem);
+	        
+	        String newErrorDesc = JsonPath.read(newBody, jsonPathErrorDesc);
+	        String oldErrorDesc = JsonPath.read(oldBody, jsonPathErrorDesc);
+	        String oldChemicalErrorDesc = JsonPath.read(oldBody, jsonPathChemicalErrorDesc);
+	        String oldSeedErrorDesc = JsonPath.read(oldBody, jsonPathSeedErrorDesc);
+	        
+	        String oldErrorID = JsonPath.read(oldBody, jsonPathErrorID);
+	        String newErrorID = JsonPath.read(newBody, jsonPathErrorID);
+	        
+	        String oldOrderType = JsonPath.read(oldBody, jsonPathOrderType);
+	        oldOrderType = (oldOrderType==null)?"":oldOrderType;
+	        String newOrderType = JsonPath.read(newBody, jsonPathOrderType);
+	        
+//	        String mergedDesc = oldErrorDesc+descSeparator+newErrorDesc;
+	        oldErrorID = (oldErrorID==null)? "":oldErrorID;
+	        newErrorID = (newErrorID==null)? "":newErrorID;
+	        String mergedErrorDesc = prettyErrorString(oldErrorDesc)+descSeparator+prettyErrorString(newErrorDesc);
+
+	        
+	        String mergedChemicalErrorDesc=("C".equals(newOrderType))?(prettyErrorString(newErrorDesc)+descSeparator+prettyErrorString(oldChemicalErrorDesc)):prettyErrorString(oldChemicalErrorDesc);
+	        String mergedSeedErrorDesc=("S".equals(newOrderType))?(prettyErrorString(newErrorDesc)+descSeparator+prettyErrorString(oldSeedErrorDesc)):prettyErrorString(oldSeedErrorDesc);
+	        
+        
+	        
+	        String mergedErrorID = oldErrorID+newErrorID;
+	        mergedErrorID = (isBlankOrNull(mergedErrorID))?null:mergedErrorID;
+	        
+	        String tempMergedOrderType = (oldOrderType.contains(newOrderType))?oldOrderType:(oldOrderType+newOrderType);
+	        char[] tempOrdetTypeChars =tempMergedOrderType.toCharArray();  
+	        Arrays.sort(tempOrdetTypeChars);
+	        String mergedOrderType = new String(tempOrdetTypeChars);
+	        
+	        Boolean oldHasChemicalFailed = Boolean.valueOf((String)JsonPath.read(oldBody, jsonHasChemicalFailed));
+	        Boolean hasChemicalFailed = (oldHasChemicalFailed)?Boolean.TRUE:( ( "C".equals(newOrderType) && !isSuccess(newErrorID) )?Boolean.TRUE:Boolean.FALSE);
+	        hasChemicalFailed = (hasChemicalFailed)?Boolean.TRUE:( ( "C".equals(oldOrderType) && !isSuccess(oldErrorID) )?Boolean.TRUE:Boolean.FALSE);
+
+	        Boolean oldHasSeedFailed = Boolean.valueOf((String)JsonPath.read(oldBody, jsonHasSeedFailed));
+	        
+	        Boolean hasSeedFailed = (oldHasSeedFailed)?Boolean.TRUE:( ( "S".equals(newOrderType) && !isSuccess(newErrorID) )?Boolean.TRUE:Boolean.FALSE);
+	        hasSeedFailed = (hasSeedFailed)?Boolean.TRUE:( ( "S".equals(oldOrderType) && !isSuccess(oldErrorID) )?Boolean.TRUE:Boolean.FALSE);
+
+	        Boolean isAllSuccess = (hasChemicalFailed||hasSeedFailed)?Boolean.FALSE:Boolean.TRUE; 
+
+	        
+	        Map<String, String> jsonOutMap = new HashMap<>();
+	        jsonOutMap.put("lineItem", lineItem);
+	        jsonOutMap.put("orderType",mergedOrderType);
+	        jsonOutMap.put("errorID", mergedErrorID);
+	        jsonOutMap.put("errorDesc", mergedErrorDesc);
+	        jsonOutMap.put("chemicalErrorDesc", mergedChemicalErrorDesc);
+	        jsonOutMap.put("seedErrorDesc", mergedSeedErrorDesc);
+	        jsonOutMap.put("hasChemicalFailed", hasChemicalFailed.toString());
+	        jsonOutMap.put("hasSeedFailed", hasSeedFailed.toString());
+	        jsonOutMap.put("hasChemicalSucceed", new Boolean((!hasChemicalFailed)).toString());
+	        jsonOutMap.put("hasSeedSucceed", new Boolean((!hasSeedFailed)).toString());
+	        jsonOutMap.put("isAllSuccess", isAllSuccess.toString());
+	        StringWriter outStringWriter = new StringWriter();
+	        
+	        try {
+				JSONValue.writeJSONString(jsonOutMap, outStringWriter);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	        String jsonTextBody = outStringWriter.toString();	        
+	        
+	        
+	        newEx.getIn().setBody(jsonTextBody);
+	        return newEx;
+	    }
+
+	    public static boolean isSuccess(String str) {
+	        return (str == null ||"null".equals(str.trim()) || "".equals(str.trim())|| "0".equals(str.trim()));
+	    }	    
+	    public static boolean isBlankOrNull(String str) {
+	        return (str == null ||"null".equals(str.trim()) || "".equals(str.trim()));
+	    }
+
+	    public static String prettyErrorString(String str) {
+	        return (str==null||"null".equals(str.trim().toLowerCase()) )?"":str.trim();
+	        		//(str == null ||"null".equals(str.trim()) || "".equals(str.trim()));
+	    }
+	    
+}

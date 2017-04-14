@@ -1,0 +1,40 @@
+package beans;
+
+import org.apache.camel.Message;
+import static beans.IDs.*;
+
+
+/*
+ * Signals an inconsistency happened in the mapping between Darwin and CRM.
+ * 
+ */
+public class InconsistentMappingException extends RuntimeException {
+
+	public static void throwInconsistentMappingException(Message msg) {
+		throw new InconsistentMappingException(msg);	
+	}
+
+	private Message msg;
+
+	public InconsistentMappingException(Message message) {
+		super();
+		msg = message;
+	}
+
+	@Override
+	public  String getMessage() {
+		String entityType = msg.getHeader(CRM_ENTITY_TYPE, String.class);
+		String filter = msg.getHeader(CRM_FILTER, String.class);
+		int entityCount = msg.getHeader(CRM_ENTITY_COUNT, Integer.class);
+		boolean mandatory = msg.getHeader(CRM_ID_MANDATORY, Boolean.class);
+		String result = msg.getBody(String.class);
+		
+		StringBuilder messageBuilder = new StringBuilder();
+		messageBuilder.append("lookup crm entity invoked for entity of type " + entityType + " where "+ filter + ".\n");
+		messageBuilder.append("lookup expected to return " + (mandatory ? "exactly 1 result" : "0 or 1 result") + ", but returned " + entityCount + ".\n");
+		messageBuilder.append("lookup result is:\n" + result);
+
+		return messageBuilder.toString();
+	}
+
+}

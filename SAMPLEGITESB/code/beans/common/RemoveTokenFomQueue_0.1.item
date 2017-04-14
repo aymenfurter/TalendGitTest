@@ -1,0 +1,77 @@
+package beans;
+
+import org.apache.camel.CamelContext;
+import org.apache.camel.ConsumerTemplate;
+import org.apache.camel.Endpoint;
+import org.apache.camel.Exchange;
+import org.apache.camel.PollingConsumer;
+import org.apache.camel.Processor;
+
+/*
+ */
+public class RemoveTokenFomQueue {
+		
+	PollingConsumer consumer;
+		
+	public RemoveTokenFomQueue() {
+	}
+
+	public void remove(CamelContext context) throws Exception {
+		//PollingConsumer consumer = getConsumer(context);
+		//Exchange jmsExchange = consumer.receiveNoWait();
+//		if(jmsExchange != null) {
+//			System.out.println("purging queue..");
+//			System.out.println(jmsExchange.getIn().getBody());
+//			
+//		} else {
+//			System.out.println("No exchange returned.");							
+//		}
+		try{
+			System.out.println("remove token..");
+			ConsumerTemplate consumerTemplate = context.createConsumerTemplate();
+			
+			//Exchange jmsExchange = consumerTemplate.receive("activemq:token");	
+			if(consumerTemplate != null) {
+				System.out.println("remove consumerTemplate is not null");
+				//Endpoint source = context.getEndpoint("cMQConnectionFactory1:queue:token");
+				Endpoint source = context.getEndpoint("cMQConnectionFactory2:queue:token");
+				String body = consumerTemplate.receiveBody(source, 20, String.class);
+				System.out.println("Removing Token");
+				//System.out.println(body);
+				if (body != null) {
+					System.out.println("If more tokens available.. do one more time");
+					remove(context);
+				}
+				else{
+					System.out.println("If Failed retrying once more");
+					System.out.println("RETRY: remove consumerTemplate is not null");
+					//Endpoint source2 = context.getEndpoint("cMQConnectionFactory1:queue:token");
+					Endpoint source2 = context.getEndpoint("cMQConnectionFactory2:queue:token");
+					String body2 = consumerTemplate.receiveBody(source2, 20, String.class);
+					System.out.println("Removing Token2");
+					System.out.println(body2);
+
+				}
+				
+			} else {
+				System.out.println("No consumerTemplate returned.");							
+			}
+		}
+		catch (Exception ex){
+			ex.printStackTrace();
+			throw ex;
+		}
+	}
+		
+		PollingConsumer getConsumer(CamelContext context) throws Exception{
+			System.out.println("getConsumer in...");
+			if (consumer == null) {
+				System.out.println("getConsumer consumer is null");
+				System.out.println(context.getEndpointMap());
+				Endpoint source = context.getEndpoint("cMQConnectionFactory1:queue:token");
+				
+				consumer = source.createPollingConsumer();
+			}
+			return consumer;
+		}
+}
