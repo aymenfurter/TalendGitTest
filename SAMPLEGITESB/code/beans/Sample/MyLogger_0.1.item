@@ -1,5 +1,8 @@
 package beans;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /*
  * user specification: the function's comment should contain keys as follows: 1. write about the function's comment.but
  * it must be before the "{talendTypes}" key.
@@ -18,24 +21,12 @@ package beans;
  * 
  * 5. {example} gives a example for the Function. it is optional.
  */
-public class __TEMPLATE__ {
+public class MyLogger {
 
-    /**
-     * helloExample: not return value, only print "hello" + message.
-     * 
-     * 
-     * {talendTypes} String
-     * 
-     * {Category} User Defined
-     * 
-     * {param} string("world") input: The string need to be printed.
-     * 
-     * {example} helloExemple("world") # hello world !.
+	final Logger logger = LoggerFactory.getLogger(MyLogger.class)
      */
-    public static void helloExample(String message) {
-        if (message == null) {
-            message = "World"; //$NON-NLS-1$
-        }
-        System.out.println("Hello " + message + " !"); //$NON-NLS-1$ //$NON-NLS-2$
+    public static void logMe() {
+
+        System.out.println("Hello " + message + " !"); 
     }
 }
