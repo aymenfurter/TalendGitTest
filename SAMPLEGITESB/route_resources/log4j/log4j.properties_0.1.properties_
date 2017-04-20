@@ -1,0 +1,19 @@
+# Set root logger level to DEBUG and its only appender to A1.
+log4j.rootLogger=DEBUG, out
+
+# A1 is set to be a ConsoleAppender.
+log4j.appender.A1=org.apache.log4j.ConsoleAppender
+
+# A1 uses PatternLayout.
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+log4j.appender.A1.layout.ConversionPattern=%-4r [%t] %-5p %c %x - %m%n
+
+
+# File appender
+log4j.appender.out=org.apache.log4j.RollingFileAppender
+log4j.appender.out.layout=org.apache.log4j.PatternLayout
+log4j.appender.out.layout.ConversionPattern=%d{ISO8601} | %-5.5p | %-16.16t | %-32.32C %4L | %X{bundle.id} - %X{bundle.name} - %X{bundle.version} | %m%n
+log4j.appender.out.file=C:/temp/log/tesb.log
+log4j.appender.out.append=true
+log4j.appender.out.maxFileSize=10MB
+log4j.appender.out.maxBackupIndex=10
