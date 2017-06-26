@@ -8,7 +8,7 @@ TAC Installtion
 > - Install Talend Product on TAC  Server
 > - Install Talend ESB on ESB Server(DEV/PRD) 
 
-#### <i class="icon-file"></i> Start Installation
+#### <i class="icon-file"></i> Install Talend Product on TAC  Server
 
 ```ssh
 $ sudo ./Talend-Installer-20161216_1026-V6.3.1-linux64-installer.run
@@ -17,6 +17,8 @@ Welcome to the Talend Installation Wizard.
 Please read the following License Agreement. You must accept the terms of this
 agreement before continuing with the installation.
 ```
+#### <i class="icon-file"></i> Accept License Agreement
+
 ```ssh
 Press [Enter] to continue :/home/miland/installation-files/license
 
@@ -36,7 +38,10 @@ Do you accept this license? [y/n]: y
 Talend Installer (v. 6.3.1)
 
 Please specify the directory where Talend modules will be installed.
+```
+#### <i class="icon-file"></i> Installation Options
 
+```ssh
 Installation Directory [/opt/Talend-6.3.1]:
 
 Please choose one of the installation styles below:
@@ -51,10 +56,14 @@ Please choose one of the installation types below:
 [2] Client - Install Talend Studio on your machine.
 [3] Custom - Choose and configure each component to be installed individually.
 Please choose an option [1] : 3
-
+```
+#### <i class="icon-file"></i> Select License file
+```ssh
 License File: []: /home/miland/installation-files/license
+```
+#### <i class="icon-file"></i> Select Components
 
-----------------------------------------------------------------------------
+```ssh
 Select the components you want to install; clear the components you do not want
 to install. Click Next when you are ready to continue.
 
@@ -84,7 +93,9 @@ Talend Server Services [Y/n] :y
 
 Is the selection above correct? [Y/n]: y
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Administration Center Configuration
+```ssh
 Talend Administration Center Configuration
 
 Talend Administration Center (TAC) installs on an Apache Tomcat server. Please choose one of the options below:
@@ -93,20 +104,14 @@ Talend Administration Center (TAC) installs on an Apache Tomcat server. Please c
 [2] Use an existing tomcat server.
 Please choose an option [1] : 1
 
-----------------------------------------------------------------------------
+
 Create TAC administrator user:
 
 Admin User Name [admin@company.com]:
 
 Admin Password [********] :
 
-----------------------------------------------------------------------------
-
-
 Enable SSO (default TAC administrator user will not be created in TAC) [y/N]: n
-
-
-----------------------------------------------------------------------------
 Talend Administration Center Configuration
 
 tacDB
@@ -131,9 +136,9 @@ Talend's webapp (directory) name under tomcat:
 
 
 Setup Email Notifications [y/N]: y
-
-
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> TAC DB Configuration
+```ssh
 Talend Administration Center - Database Configuration
 
 This page enables you to configure Talend Administration Center to use an
@@ -149,7 +154,9 @@ User Name [talend]: tacadmin
 
 Password [********] :
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Email Notification Configuration
+```ssh
 Email Notifications Configuration
 
 This page allows you to setup TAC to use an SMTP server to send out automatic
@@ -169,7 +176,9 @@ Mail user name: [myaccount]:
 
 Mail password: [mypass]:
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i>Nexus Configuration
+```ssh
 Talend Artifact Repository Nexus Configuration
 
 Talend Artifact Repository Nexus Configuration
@@ -182,13 +191,17 @@ Nexus Host
 
  [0.0.0.0]: 10.129.33.137
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Log Server Configuration
+```ssh
 Talend Log Server Configuration
 
-----------------------------------------------------------------------------
+
 Cluster Name [talend-log-central]:
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Data Stewardship Configuration
+```ssh
 Talend Data Stewardship Configuration
 
 TDS installs on Apache Tomcat server. Please choose one of option below:
@@ -197,13 +210,12 @@ TDS installs on Apache Tomcat server. Please choose one of option below:
 [2] : Use an existing Tomcat server
 Please choose an option [1] : 1
 
-----------------------------------------------------------------------------
+
 Embedded Tomcat 8 server (recommended)
 
 UI port (Tomcat port): [19999]:
 
-----------------------------------------------------------------------------
-----------------------------------------------------------------------------
+
 Talend Data Stewardship Configuration
 
 Choose MongoDB installation
@@ -212,15 +224,15 @@ Choose MongoDB installation
 [2] : External MongoDB
 Please choose an option [1] : 1
 
-----------------------------------------------------------------------------
+
 Embedded MongoDB
 
 MongoDB Port: [27017]:
 
-----------------------------------------------------------------------------
+
 Embedded MongoDB
 
-----------------------------------------------------------------------------
+
 Talend Data Stewardship Configuration
 
 Choose Kafka installation:
@@ -229,15 +241,14 @@ Choose Kafka installation:
 [2] : External Kafka and Zookeeper
 Please choose an option [1] : 1
 
-----------------------------------------------------------------------------
+
 Embedded Kafka and Zookeeper
 
 Kafka port: [9092]:
 
 Zookeeper port: [2181]:
 
-----------------------------------------------------------------------------
-----------------------------------------------------------------------------
+
 Talend Data Stewardship Configuration
 
 Talend Administration Center parameters:
@@ -248,7 +259,9 @@ TAC user: [admin@company.com]:
 
 TAC password: [********] :
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Command Line Configuration
+```ssh
 Talend CommandLine Configuration
 
 This page allows you to select a port to be used by Talend CommandLine
@@ -256,7 +269,9 @@ interface. This port is used to communicate with Talend Administration Center.
 
 CommandLine port [8002]:
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Job Server(DEV) Configuration
+```ssh
 Talend Job Server Configuration
 
 This page allows you to configure Talend Remote Job Server. Please configure
@@ -274,7 +289,9 @@ duration. Set this value to 0 to disable log purging
 
 Max cache duration (days) [90]:
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Data Quality Portal Configuration
+```ssh
 Talend Data Quality Portal Configuration
 
 Talend Data Quality Portal is installed on top of a Tomcat application server. Please choose one of the following options:
@@ -297,7 +314,9 @@ TDQ Portal Port: (valid only with embedded tomcat install)
 
  [8580]:
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend DQ Portal DB Configuration
+```ssh
 Data Quality Portal - Database
 
 Database Configuration:
@@ -322,19 +341,19 @@ User name: [sysdba]: tdqpadmin
 
 Password :
 
-----------------------------------------------------------------------------
+
 Talend Data Quality Portal Configuration
 
 Server Address:
 
  [127.0.1.1]: 10.129.33.137
 
-----------------------------------------------------------------------------
+
 Talend Data Preparation Configuration
 
 Enable Data Preparation on Big data [y/N]: n
 
-----------------------------------------------------------------------------
+
 Talend Data Preparation Configuration
 
 Choose MongoDB installation
@@ -343,15 +362,17 @@ Choose MongoDB installation
 [2] : External MongoDB
 Please choose an option [1] : 1
 
-----------------------------------------------------------------------------
+
 Embedded MongoDB
 
 MongoDB port: 27017
 
-----------------------------------------------------------------------------
+
 Embedded MongoDB
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Data Preparation Server Configuration
+```ssh
 Data Preparation Server configuration
 
 Talend Administration Center parameters:
@@ -370,16 +391,17 @@ UI port: [9999]:
 
 Backend port: [8989]:
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Dictionary Service Configuration
+```ssh
 Talend Dictionary Service Configuration
 
-----------------------------------------------------------------------------
+
 Tomcat configuration parameters
 
 Tomcat port: [8187]:
 
-----------------------------------------------------------------------------
-----------------------------------------------------------------------------
+
 Talend Dictionary Service Configuration
 
 Choose MongoDB installation
@@ -388,15 +410,15 @@ Choose MongoDB installation
 [2] : External MongoDB
 Please choose an option [1] : 1
 
-----------------------------------------------------------------------------
+
 Embedded MongoDB
 
 MongoDB port: 27017
 
-----------------------------------------------------------------------------
+
 Embedded MongoDB
 
-----------------------------------------------------------------------------
+
 Talend Dictionary Service Configuration
 
 Talend Administration Center parameters:
@@ -407,20 +429,24 @@ TAC user: [admin@company.com]:
 
 TAC password: [********] :
 
-----------------------------------------------------------------------------
+```
+#### <i class="icon-file"></i> Talend Kafka & Zookeeper Configuration
+```ssh
 Talend Kafka and Zookeeper configuration
 
 Apache and Zookeeper parameters
 
 Zookeeper data dir: [/opt/Talend-6.3.1/kafka/temp]:
 
-----------------------------------------------------------------------------
+
 Services Installation
 
 This page allows you to setup Talend components as system services. By
 installing a component as a service the application would start automatically at
 system startup.
-
+```
+#### <i class="icon-file"></i> Check Services to be installed as  a Service
+```ssh
 It's recommended that you check all the boxes below.
 
 
@@ -499,10 +525,10 @@ forked process: 18532
 child process started successfully, parent exiting
 #
 
-----------------------------------------------------------------------------
 Setup has finished installing Talend on your computer.
 
 
------------------------------------
+
+
 ```
 
