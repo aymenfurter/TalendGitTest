@@ -1,12 +1,17 @@
 Talend ESB Installtion document
 ===================
+![Talend Conbraco](https://github.com/dmilan77/TalendGitTest/raw/master/TalendConbraco.jpg)
 TAC Installtion
 -------------
 > **Steps:**
+
 > - Prepare Ubuntu OS and install JDK
 > - Create following Oracle User
 > - Install Talend Product on TAC  Server
 > - Install Talend ESB on ESB Server(DEV/PRD) 
+> - Install ESB Server
+> - Install ESB Runtime
+> - Configure TAC
 
 #### <i class="icon-file"></i> Install Talend Product on TAC  Server
 
@@ -57,12 +62,7 @@ Please choose one of the installation types below:
 [3] Custom - Choose and configure each component to be installed individually.
 Please choose an option [1] : 3
 ```
-#### <i class="icon-file"></i> Select License file
-```ssh
-License File: []: /home/miland/installation-files/license
-```
 #### <i class="icon-file"></i> Select Components
-
 ```ssh
 Select the components you want to install; clear the components you do not want
 to install. Click Next when you are ready to continue.
@@ -138,6 +138,7 @@ Talend's webapp (directory) name under tomcat:
 Setup Email Notifications [y/N]: y
 ```
 #### <i class="icon-file"></i> TAC DB Configuration
+
 ```ssh
 Talend Administration Center - Database Configuration
 
