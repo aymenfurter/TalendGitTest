@@ -17,13 +17,14 @@ Talend ESB Installation document
 -------------
 > **Oracle Schema Detail**
 > Create following users/schema in Oracle DB for ESB Product installations.
-> |  Schema Name 	| User   	| Purpose  	|  
-> |---	|---	|---	|
-> | tacadmin|   tacadmin|   Talend Adminstration Center Database	|
-> |tacaudit    	|   tacaudit    	|   Audit Database	|
-> | tdqpadmin   	|  tdqpadmin   	|   DQ Portal Database	|
-> | tdqlspagobi |  tdqlspagobi  	|   Spago BI Databases	|
-> | tacamc |  tacamc  	|   AMC databases	|
+
+|  Schema Name 	| User   	| Purpose  	|  
+|---	|---	|---	|
+| `tacadmin`|   tacadmin|   Talend Adminstration Center Database	|
+|`tacaudit `   	|   tacaudit    	|   Audit Database	|
+| `tdqpadmin`   	|  tdqpadmin   	|   DQ Portal Database	|
+| `tdqlspagobi` |  tdqlspagobi  	|   Spago BI Databases	|
+| `tacamc` |  tacamc  	|   AMC databases	|
 
 ```sql
 
@@ -48,7 +49,7 @@ grant CONNECT, RESOURCE to tacamc;
 **Install Talend Product on TAC  Server**
 -------------
 
-#### <i class="icon-file"></i> Install  TAC  Server
+#### :black_circle: Install  TAC  Server
 
 ```ssh
 $ sudo ./Talend-Installer-20161216_1026-V6.3.1-linux64-installer.run
@@ -57,7 +58,7 @@ Welcome to the Talend Installation Wizard.
 Please read the following License Agreement. You must accept the terms of this
 agreement before continuing with the installation.
 ```
-#### <i class="icon-file"></i> Accept License Agreement
+#### :black_circle: Accept License Agreement
 
 ```ssh
 Press [Enter] to continue :/home/miland/installation-files/license
@@ -79,7 +80,7 @@ Talend Installer (v. 6.3.1)
 
 Please specify the directory where Talend modules will be installed.
 ```
-#### <i class="icon-file"></i> Installation Options
+#### :black_circle: Installation Options
 
 ```ssh
 Installation Directory [/opt/Talend-6.3.1]:
@@ -97,7 +98,7 @@ Please choose one of the installation types below:
 [3] Custom - Choose and configure each component to be installed individually.
 Please choose an option [1] : 3
 ```
-#### <i class="icon-file"></i> Select Components
+#### :black_circle: Select Components
 ```ssh
 Select the components you want to install; clear the components you do not want
 to install. Click Next when you are ready to continue.
@@ -129,7 +130,7 @@ Talend Server Services [Y/n] :y
 Is the selection above correct? [Y/n]: y
 
 ```
-#### <i class="icon-file"></i> Talend Administration Center Configuration
+#### :black_circle: Talend Administration Center Configuration
 ```ssh
 Talend Administration Center Configuration
 
@@ -172,7 +173,7 @@ Talend's webapp (directory) name under tomcat:
 
 Setup Email Notifications [y/N]: y
 ```
-#### <i class="icon-file"></i> TAC DB Configuration
+#### :black_circle: TAC DB Configuration
 
 ```ssh
 Talend Administration Center - Database Configuration
@@ -191,7 +192,7 @@ User Name [talend]: tacadmin
 Password [********] :
 
 ```
-#### <i class="icon-file"></i> Email Notification Configuration
+#### :black_circle: Email Notification Configuration
 ```ssh
 Email Notifications Configuration
 
@@ -213,7 +214,7 @@ Mail user name: [myaccount]:
 Mail password: [mypass]:
 
 ```
-#### <i class="icon-file"></i>Nexus Configuration
+#### :black_circle:Nexus Configuration
 ```ssh
 Talend Artifact Repository Nexus Configuration
 
@@ -228,7 +229,7 @@ Nexus Host
  [0.0.0.0]: 10.129.33.137
 
 ```
-#### <i class="icon-file"></i> Talend Log Server Configuration
+#### :black_circle: Talend Log Server Configuration
 ```ssh
 Talend Log Server Configuration
 
@@ -236,7 +237,7 @@ Talend Log Server Configuration
 Cluster Name [talend-log-central]:
 
 ```
-#### <i class="icon-file"></i> Talend Data Stewardship Configuration
+#### :black_circle: Talend Data Stewardship Configuration
 ```ssh
 Talend Data Stewardship Configuration
 
@@ -296,7 +297,7 @@ TAC user: [admin@company.com]:
 TAC password: [********] :
 
 ```
-#### <i class="icon-file"></i> Talend Command Line Configuration
+#### :black_circle: Talend Command Line Configuration
 ```ssh
 Talend CommandLine Configuration
 
@@ -306,7 +307,7 @@ interface. This port is used to communicate with Talend Administration Center.
 CommandLine port [8002]:
 
 ```
-#### <i class="icon-file"></i> Talend Job Server(DEV) Configuration
+#### :black_circle: Talend Job Server(DEV) Configuration
 ```ssh
 Talend Job Server Configuration
 
@@ -326,7 +327,7 @@ duration. Set this value to 0 to disable log purging
 Max cache duration (days) [90]:
 
 ```
-#### <i class="icon-file"></i> Talend Data Quality Portal Configuration
+#### :black_circle: Talend Data Quality Portal Configuration
 ```ssh
 Talend Data Quality Portal Configuration
 
@@ -351,7 +352,7 @@ TDQ Portal Port: (valid only with embedded tomcat install)
  [8580]:
 
 ```
-#### <i class="icon-file"></i> Talend DQ Portal DB Configuration
+#### :black_circle: Talend DQ Portal DB Configuration
 ```ssh
 Data Quality Portal - Database
 
@@ -407,7 +408,7 @@ MongoDB port: 27017
 Embedded MongoDB
 
 ```
-#### <i class="icon-file"></i> Talend Data Preparation Server Configuration
+#### :black_circle: Talend Data Preparation Server Configuration
 ```ssh
 Data Preparation Server configuration
 
@@ -428,7 +429,7 @@ UI port: [9999]:
 Backend port: [8989]:
 
 ```
-#### <i class="icon-file"></i> Talend Dictionary Service Configuration
+#### :black_circle: Talend Dictionary Service Configuration
 ```ssh
 Talend Dictionary Service Configuration
 
@@ -466,7 +467,7 @@ TAC user: [admin@company.com]:
 TAC password: [********] :
 
 ```
-#### <i class="icon-file"></i> Talend Kafka & Zookeeper Configuration
+#### :black_circle: Talend Kafka & Zookeeper Configuration
 ```ssh
 Talend Kafka and Zookeeper configuration
 
@@ -481,7 +482,7 @@ This page allows you to setup Talend components as system services. By
 installing a component as a service the application would start automatically at
 system startup.
 ```
-#### <i class="icon-file"></i> Check Services to be installed as  a Service
+#### :black_circle: Check Services to be installed as  a Service
 ```ssh
 It's recommended that you check all the boxes below.
 
@@ -535,12 +536,12 @@ Install Talend Data Preparation as a service [Y/n]: y
 Install Talend Dictionary Service as a service [Y/n]: y
 
 
-----------------------------------------------------------------------------
+
 Setup is now ready to begin installing Talend on your computer.
 
 Do you want to continue? [Y/n]: y
 
-----------------------------------------------------------------------------
+
 Please wait while Setup installs Talend modules on your computer.
 
  Installing
@@ -565,18 +566,22 @@ Setup has finished installing Talend on your computer.
 ```
 
 **ConfigureTAC  Server**
-
+-------------
 > **Open TAC URL:**
 
+> - Download `ojdbc8.jar` from [www.oracle.com](http://www.oracle.com)  and copy to `/opt/Talend-6.3.1/tac/apache-tomcat/endorsed`
+> - Remove all other copy of `ojdbc*.jar` file from all sub directories under `/opt/Talend-6.3.1/tac/`
+> - Restart TAC: `sudo /etc/init.d/talend-tac-6.3.1 stop` and `sudo /etc/init.d/talend-tac-6.3.1 start`
 > - Navigate to [Talend Administration Center](http://tac01.conbraco.net:8080/org.talend.administrator/)
 > - Configure parameters below as in the image.
 
-```text
-Database type: Oracle
-driver: oracle.jdbc.driver.OracleDriver
-url: jdbc:oracle:thin:@//odb01.conbraco.net:1521/talendadmin.conbraco.net
-username: tacadmin
-password: xxxxxxx
-```
+
+|Database type|Oracle|
+|---	|---	|
+|driver|`oracle.jdbc.driver.OracleDriver`|
+|url|`jdbc:oracle:thin:@//odb01.conbraco.net:1521/talendadmin.conbraco.net`|
+|username|`tacadmin`|
+|password|`xxxxxxx`|
+
 
 
