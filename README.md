@@ -1,6 +1,6 @@
 Talend ESB Installtion document
 ===================
-![Talend Conbraco](../raw/master/TalendConbraco.jpg)
+![Talend Conbraco](../../raw/master/TalendConbraco.jpg)
 
 > **Steps:**
 
