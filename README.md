@@ -1,4 +1,4 @@
-Talend ESB Installtion document
+Talend ESB Installation document
 ===================
 ![Talend Conbraco](../../raw/master/TalendConbraco.jpg)
 
@@ -9,11 +9,46 @@ Talend ESB Installtion document
 > - Install Talend Product on TAC  Server
 > - Install Talend ESB on ESB Server(DEV/PRD) 
 > - Install ESB Server
-> - Install ESB Runtime
+> - Install ESB Runtime(DEV/PRD)
+> - Create DIrectories
 > - Configure TAC
+
+**Create Oracle Schema**
+-------------
+> **Oracle Schema Detail**
+> Create following users/schema in Oracle DB for ESB Product installations.
+> |  Schema Name 	| User   	| Purpose  	|  
+> |---	|---	|---	|
+> | tacadmin|   tacadmin|   Talend Adminstration Center Database	|
+> |tacaudit    	|   tacaudit    	|   Audit Database	|
+> | tdqpadmin   	|  tdqpadmin   	|   DQ Portal Database	|
+> | tdqlspagobi |  tdqlspagobi  	|   Spago BI Databases	|
+> | tacamc |  tacamc  	|   AMC databases	|
+
+```sql
+
+CREATE USER tacaudit IDENTIFIED BY XXXXXXXX;
+grant CONNECT, RESOURCE to tacaudit;
+
+CREATE USER tdqpadmin IDENTIFIED BY XXXXXXXX;
+grant CONNECT, RESOURCE to tdqpadmin;
+
+
+CREATE USER tacadmin IDENTIFIED BY XXXXXXXX;
+grant CONNECT, RESOURCE to tacadmin;
+
+
+CREATE USER tdqlspagobi IDENTIFIED BY XXXXXXXX;
+grant CONNECT, RESOURCE to tdqlspagobi;
+
+CREATE USER tacamc IDENTIFIED BY XXXXXXXX;
+grant CONNECT, RESOURCE to tacamc;
+```
+
 **Install Talend Product on TAC  Server**
 -------------
-#### <i class="icon-file"></i> Install Talend Product on TAC  Server
+
+#### <i class="icon-file"></i> Install  TAC  Server
 
 ```ssh
 $ sudo ./Talend-Installer-20161216_1026-V6.3.1-linux64-installer.run
@@ -527,9 +562,21 @@ child process started successfully, parent exiting
 #
 
 Setup has finished installing Talend on your computer.
-
-
-
-
 ```
+
+**ConfigureTAC  Server**
+
+> **Open TAC URL:**
+
+> - Navigate to [Talend Administration Center](http://tac01.conbraco.net:8080/org.talend.administrator/)
+> - Configure parameters below as in the image.
+
+```text
+Database type: Oracle
+driver: oracle.jdbc.driver.OracleDriver
+url: jdbc:oracle:thin:@//odb01.conbraco.net:1521/talendadmin.conbraco.net
+username: tacadmin
+password: xxxxxxx
+```
+
 
