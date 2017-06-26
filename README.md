@@ -49,7 +49,7 @@ grant CONNECT, RESOURCE to tacamc;
 **Install Talend Product on TAC  Server**
 -------------
 
-#### :black_circle: Install  TAC  Server
+#### :file_folder: Install  TAC  Server
 
 ```ssh
 $ sudo ./Talend-Installer-20161216_1026-V6.3.1-linux64-installer.run
@@ -58,7 +58,7 @@ Welcome to the Talend Installation Wizard.
 Please read the following License Agreement. You must accept the terms of this
 agreement before continuing with the installation.
 ```
-#### :black_circle: Accept License Agreement
+#### :file_folder: Accept License Agreement
 
 ```ssh
 Press [Enter] to continue :/home/miland/installation-files/license
@@ -80,7 +80,7 @@ Talend Installer (v. 6.3.1)
 
 Please specify the directory where Talend modules will be installed.
 ```
-#### :black_circle: Installation Options
+#### :file_folder: Installation Options
 
 ```ssh
 Installation Directory [/opt/Talend-6.3.1]:
@@ -98,7 +98,7 @@ Please choose one of the installation types below:
 [3] Custom - Choose and configure each component to be installed individually.
 Please choose an option [1] : 3
 ```
-#### :black_circle: Select Components
+#### :file_folder: Select Components
 ```ssh
 Select the components you want to install; clear the components you do not want
 to install. Click Next when you are ready to continue.
@@ -130,7 +130,7 @@ Talend Server Services [Y/n] :y
 Is the selection above correct? [Y/n]: y
 
 ```
-#### :black_circle: Talend Administration Center Configuration
+#### :file_folder: Talend Administration Center Configuration
 ```ssh
 Talend Administration Center Configuration
 
@@ -173,7 +173,7 @@ Talend's webapp (directory) name under tomcat:
 
 Setup Email Notifications [y/N]: y
 ```
-#### :black_circle: TAC DB Configuration
+#### :file_folder: TAC DB Configuration
 
 ```ssh
 Talend Administration Center - Database Configuration
@@ -192,7 +192,7 @@ User Name [talend]: tacadmin
 Password [********] :
 
 ```
-#### :black_circle: Email Notification Configuration
+#### :file_folder: Email Notification Configuration
 ```ssh
 Email Notifications Configuration
 
@@ -214,7 +214,7 @@ Mail user name: [myaccount]:
 Mail password: [mypass]:
 
 ```
-#### :black_circle:Nexus Configuration
+#### :file_folder:Nexus Configuration
 ```ssh
 Talend Artifact Repository Nexus Configuration
 
@@ -229,7 +229,7 @@ Nexus Host
  [0.0.0.0]: 10.129.33.137
 
 ```
-#### :black_circle: Talend Log Server Configuration
+#### :file_folder: Talend Log Server Configuration
 ```ssh
 Talend Log Server Configuration
 
@@ -237,7 +237,7 @@ Talend Log Server Configuration
 Cluster Name [talend-log-central]:
 
 ```
-#### :black_circle: Talend Data Stewardship Configuration
+#### :file_folder: Talend Data Stewardship Configuration
 ```ssh
 Talend Data Stewardship Configuration
 
@@ -297,7 +297,7 @@ TAC user: [admin@company.com]:
 TAC password: [********] :
 
 ```
-#### :black_circle: Talend Command Line Configuration
+#### :file_folder: Talend Command Line Configuration
 ```ssh
 Talend CommandLine Configuration
 
@@ -307,7 +307,7 @@ interface. This port is used to communicate with Talend Administration Center.
 CommandLine port [8002]:
 
 ```
-#### :black_circle: Talend Job Server(DEV) Configuration
+#### :file_folder: Talend Job Server(DEV) Configuration
 ```ssh
 Talend Job Server Configuration
 
@@ -327,7 +327,7 @@ duration. Set this value to 0 to disable log purging
 Max cache duration (days) [90]:
 
 ```
-#### :black_circle: Talend Data Quality Portal Configuration
+#### :file_folder: Talend Data Quality Portal Configuration
 ```ssh
 Talend Data Quality Portal Configuration
 
@@ -352,7 +352,7 @@ TDQ Portal Port: (valid only with embedded tomcat install)
  [8580]:
 
 ```
-#### :black_circle: Talend DQ Portal DB Configuration
+#### :file_folder: Talend DQ Portal DB Configuration
 ```ssh
 Data Quality Portal - Database
 
@@ -408,7 +408,7 @@ MongoDB port: 27017
 Embedded MongoDB
 
 ```
-#### :black_circle: Talend Data Preparation Server Configuration
+#### :file_folder: Talend Data Preparation Server Configuration
 ```ssh
 Data Preparation Server configuration
 
@@ -429,7 +429,7 @@ UI port: [9999]:
 Backend port: [8989]:
 
 ```
-#### :black_circle: Talend Dictionary Service Configuration
+#### :file_folder: Talend Dictionary Service Configuration
 ```ssh
 Talend Dictionary Service Configuration
 
@@ -467,7 +467,7 @@ TAC user: [admin@company.com]:
 TAC password: [********] :
 
 ```
-#### :black_circle: Talend Kafka & Zookeeper Configuration
+#### :file_folder: Talend Kafka & Zookeeper Configuration
 ```ssh
 Talend Kafka and Zookeeper configuration
 
@@ -482,7 +482,7 @@ This page allows you to setup Talend components as system services. By
 installing a component as a service the application would start automatically at
 system startup.
 ```
-#### :black_circle: Check Services to be installed as  a Service
+#### :file_folder: Check Services to be installed as  a Service
 ```ssh
 It's recommended that you check all the boxes below.
 
