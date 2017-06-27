@@ -1,14 +1,13 @@
 Talend ESB Installation document
 ===================
-![Talend Conbraco](../../raw/master/TalendConbraco.jpg)
+![Talend Conbraco](http://tsource.conbraco.net/tadmin/Administration/raw/master/images/TalendConbraco.jpg)
 
 > **Steps:**
 
 > - Prepare Ubuntu OS and install JDK
 > - Create following Oracle User
 > - Install Talend Product on TAC  Server
-> - Install Talend ESB on ESB Server(DEV/PRD) 
-> - Install ESB Server
+> - Install Talend ESB on ESB Server(DEV/PRD)
 > - Install ESB Runtime(DEV/PRD)
 > - Create DIrectories
 > - Configure TAC
@@ -565,11 +564,11 @@ child process started successfully, parent exiting
 Setup has finished installing Talend on your computer.
 ```
 
-**ConfigureTAC  Server**
--------------
+#### :file_folder:Configure TAC  Server
+
 > **Open TAC URL:**
 
-> - Download `ojdbc8.jar` from [www.oracle.com](http://www.oracle.com)  and copy to `/opt/Talend-6.3.1/tac/apache-tomcat/endorsed`
+> - Download `ojdbc8.jar` from [Oracle](http://www.oracle.com/technetwork/database/features/jdbc/jdbc-ucp-122-3110062.html)  and copy to `/opt/Talend-6.3.1/tac/apache-tomcat/endorsed`
 > - Remove all other copy of `ojdbc*.jar` file from all sub directories under `/opt/Talend-6.3.1/tac/`
 > - Restart TAC: `sudo /etc/init.d/talend-tac-6.3.1 stop` and `sudo /etc/init.d/talend-tac-6.3.1 start`
 > - Navigate to [Talend Administration Center](http://tac01.conbraco.net:8080/org.talend.administrator/)
@@ -584,4 +583,39 @@ Setup has finished installing Talend on your computer.
 |password|`xxxxxxx`|
 
 
+**Install Talend ESB on TAC Server**
+-------------
+#### :file_folder:Configure TAC  Server
+> - login to unix console as `talenduser` ( if `\opt` owened by `talenduser` account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-ESB-V6.3.1-20161215184526.zip` into `/opt/Talend-6.3.1/`. It should create a directory `Talend-ESB-V6.3.1`
+> - create  user `talenduser` and group `talendgroup`
+>> - `adduser talenduser`
+>> - `groupadd -g 1004 talendgroup`
+>> - `usermod -a -G talendgroup talenduser`
+>> - `chown -R talenduser:talendgroup /opt/Talend-Runtime-V6.3.1/`
+>> - `chown -R talenduser:talendgroup activemq.5.14.1/`
+> - Create Active MQ Service
+>> - `ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/activemq`
+> - edit `/opt/activemq.5.14.1/bin/linux-x86-64/activemq` add a line below `ACTIVEMQ_HOME` `RUN_AS_USER="talenduser"`
+> - Create ESB Service
+>> - `ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbprod01-service /etc/init.d/`
 
+**Install Talend ESB components**
+-------------
+#### :file_folder:Configure ESB runtime Server
+> - login to unix console as `root` ( if `\opt` owened by root account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-Runtime-V6.3.1-20161215184526.zip` into `/opt`. It should create a directory `Talend-ESB-V6.3.1`
+> - create  user `talenduser` and group `talendgroup`
+>> - `adduser talenduser`
+>> - `groupadd -g 1004 talendgroup`
+>> - `usermod -a -G talendgroup talenduser`
+>> - `chown -R talenduser:talendgroup /opt/Talend-Runtime-V6.3.1/`
+>> - `chown -R talenduser:talendgroup activemq.5.14.1/`
+> - create ESB wrapper
+>> - login to karaf console and execute following commands
+>> -
+> - Install  Active MQ Server
+>> - copy `/installation-files/Talend-ESB-V6.3.1/activemq` to `/opt`
+>> - rename `/opt/activemq` as `/opt/activemq.5.14.1`
+>> - `ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/activemq`
+> - edit `/opt/activemq.5.14.1/bin/linux-x86-64/activemq` add a line below `ACTIVEMQ_HOME` `RUN_AS_USER="talenduser"`
+> - Create ESB Service
+>> - `ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbprod01-service /etc/init.d/`
