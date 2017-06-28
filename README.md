@@ -6,24 +6,43 @@ Talend ESB Installation document
 
 > - Prepare Ubuntu OS and install JDK
 > - Create following Oracle User
+> - Create DIrectories
 > - Install Talend Product on TAC  Server
 > - Install Talend ESB on ESB Server(DEV/PRD)
 > - Install ESB Runtime(DEV/PRD)
-> - Create DIrectories
 > - Configure TAC
+> - Create GIT Project
+> - Service Details
+
+**Prepare Ubuntu OS and install JDK**
+-------------
+> **Server Detail**
+> Following the server details
+
+|  Server Name 	| IP Address   	| IP Address  	|  
+|---	|---	|---	|
+| TAC |   `tac01.conbraco.net` |   `10.129.33.137`	|
+|ESB DEV   	|   `tesbdev01.conbraco.net`    	|   `10.129.33.146`	|
+|ESB PROD 	|  `tjrprod01.conbraco.net`   	|   `10.129.33.145`	|
+|JOB PROD |  `tesbprod01.conbraco.net`  	|   `10.129.33.144`	|
+|Oracle Database |  `odb01.conbraco.net`  	|   `10.129.33.77` 	|
+|GIT Source Control |  `tsource.conbraco.net`  	|   `10.129.33.147`	|
+
 
 **Create Oracle Schema**
 -------------
 > **Oracle Schema Detail**
 > Create following users/schema in Oracle DB for ESB Product installations.
 
-|  Schema Name 	| User   	| Purpose  	|  
-|---	|---	|---	|
-| `tacadmin`|   tacadmin|   Talend Adminstration Center Database	|
-|`tacaudit `   	|   tacaudit    	|   Audit Database	|
-| `tdqpadmin`   	|  tdqpadmin   	|   DQ Portal Database	|
-| `tdqlspagobi` |  tdqlspagobi  	|   Spago BI Databases	|
-| `tacamc` |  tacamc  	|   AMC databases	|
+|  Schema Name 	| User   	| Service Name |host|port |Purpose  	|  
+|---	|---	|---	|---   |---   |---   |
+| `tacadmin`|   `tacadmin`| `talendadmin.conbraco.net`  |`odb01.conbraco.net`|`1521`|Talend Adminstration Center Database	|
+|`tacaudit `   	|   `tacaudit`    	| `talendadmin.conbraco.net`    |`odb01.conbraco.net`|`1521`|Audit Database	|
+| `tdqpadmin`   	|  `tdqpadmin`   	| `talendadmin.conbraco.net`    |`odb01.conbraco.net`|`1521`|DQ Portal Database	|
+| `tdqlspagobi` |  `tdqlspagobi`  	| `talendadmin.conbraco.net`    |`odb01.conbraco.net`|`1521`|Spago BI Databases	|
+| `tacamc` |  `tacamc`  	| `talendadmin.conbraco.net`  	  |`odb01.conbraco.net`|`1521`|AMC databases	|
+
+> - **SQL Scripts**
 
 ```sql
 
@@ -587,19 +606,17 @@ Setup has finished installing Talend on your computer.
 -------------
 #### :file_folder:Configure TAC  Server
 > - login to unix console as `talenduser` ( if `\opt` owened by `talenduser` account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-ESB-V6.3.1-20161215184526.zip` into `/opt/Talend-6.3.1/`. It should create a directory `Talend-ESB-V6.3.1`
-> - create  user `talenduser` and group `talendgroup`
->> - `adduser talenduser`
->> - `groupadd -g 1004 talendgroup`
->> - `usermod -a -G talendgroup talenduser`
->> - `chown -R talenduser:talendgroup /opt/Talend-Runtime-V6.3.1/`
->> - `chown -R talenduser:talendgroup activemq.5.14.1/`
-> - Create Active MQ Service
->> - `ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/activemq`
-> - edit `/opt/activemq.5.14.1/bin/linux-x86-64/activemq` add a line below `ACTIVEMQ_HOME` `RUN_AS_USER="talenduser"`
-> - Create ESB Service
->> - `ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbprod01-service /etc/init.d/`
+> - start Talend ESB
+>> - Login to Unix shell at start `trun`
+>> - `/opt/Talend-6.3.1/Talend-ESB-V6.3.1/container/bin/trun`
+> - This will open Karaf Consol. Run the following commands below in Karaf console
+> - Create ESB wrapper
+>> - `feature:install service-wrapper`
+>> - `wrapper:install -n talend-esb-service`
+> - Create  Service for ESB. Open a Unix a console and crete the follwoing link below.
+>> - Create Service `ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbprod01-service /etc/init.d/`
 
-**Install Talend ESB components**
+**Install Talend ESB Runtime & Active MQ**
 -------------
 #### :file_folder:Configure ESB runtime Server
 > - login to unix console as `root` ( if `\opt` owened by root account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-Runtime-V6.3.1-20161215184526.zip` into `/opt`. It should create a directory `Talend-ESB-V6.3.1`
@@ -609,13 +626,49 @@ Setup has finished installing Talend on your computer.
 >> - `usermod -a -G talendgroup talenduser`
 >> - `chown -R talenduser:talendgroup /opt/Talend-Runtime-V6.3.1/`
 >> - `chown -R talenduser:talendgroup activemq.5.14.1/`
-> - create ESB wrapper
->> - login to karaf console and execute following commands
->> -
+> - start Talend ESB
+>> - Login to Unix shell at start `trun`
+>> - `/opt/Talend-Runtime-V6.3.1/bin/trun`
+> - This will open Karaf Consol. Run the following commands below in Karaf console
+> - Create ESB Runtime wrapper
+>> - `feature:install service-wrapper`
+>> - `wrapper:install -n talend-esb-tesbdev01`
 > - Install  Active MQ Server
 >> - copy `/installation-files/Talend-ESB-V6.3.1/activemq` to `/opt`
->> - rename `/opt/activemq` as `/opt/activemq.5.14.1`
->> - `ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/activemq`
+>> - rename `/opt/activemq` to `/opt/activemq.5.14.1`
+>> - Create Service `ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/activemq`
 > - edit `/opt/activemq.5.14.1/bin/linux-x86-64/activemq` add a line below `ACTIVEMQ_HOME` `RUN_AS_USER="talenduser"`
-> - Create ESB Service
->> - `ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbprod01-service /etc/init.d/`
+> - Create  Service(ESB and ActiveMQ)
+
+|  Server 	| Script   	| Purpose  	|  
+|---	|---	|---	|
+|ESB|`ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbdev01-service /etc/init.d/`|ESB server service|
+|ActtiveMQ|'ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/'|Active MQ Service|
+**Service Details **
+-------------
+#### :file_folder:TAC Server (`TAC01.conbraco.net`)
+
+|  Service Name 	| lcoation   	| Purpose  	|  
+|---	|---	|---	|
+|`talend-cmdline-6.3.1`|`/etc/init.d/`|Talend Comamnd Line Service|
+|`talend-dataprep-6.3.1`|`/etc/init.d/`|Talend Data Preparation Service|
+|`talend-dqdict-6.3.1`|`/etc/init.d/`|Talend Data Quality Service|
+|`talend-kafka-6.3.1`|`/etc/init.d/`| Kafka Service|
+|`talend-mongodb-6.3.1`|`/etc/init.d/`|mongodb Service|
+|`talend-rjs-6.3.1`|`/etc/init.d/`|Talend Comamnd Line Service|
+|`talend-tac-6.3.1`|`/etc/init.d/`|Talend Adminstration Center Service|
+|`talend-tcomp-6.3.1`|`/etc/init.d/`|Talend component Service|
+
+#### :file_folder:ESB runtime (`TESBDEV01.conbraco.net` and `TESBPROD01.conbraco.net`)
+
+|  Service Name 	| lcoation   	| Purpose  	|  
+|---	|---	|---	|
+|`talend-esb-tesb<xxx>01-service`|`/etc/init.d/`|Talend Comamnd Line Service|
+|`activemq`|`/etc/init.d/`|Talend Data Preparation Service|
+
+
+#### :file_folder:Job Server (`TAC01.conbraco.net` and `TJRPROD01.conbraco.net`)
+
+|  Service Name 	| lcoation   	| Purpose  	|  
+|---	|---	|---	|
+|`talend-<env>jobserver01-service`|`/etc/init.d/`|Talend JOB  Server|
