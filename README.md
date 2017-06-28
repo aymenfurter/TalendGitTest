@@ -34,14 +34,14 @@ Talend ESB Installation Runbook
 > **Server Detail**
 > Following the server details
 
-|  Server Name 	| IP Address   	| IP Address  	|  
-|---	|---	|---	|
-| TAC |   `tac01.conbraco.net` |   `10.129.33.137`	|
-|ESB DEV   	|   `tesbdev01.conbraco.net`    	|   `10.129.33.146`	|
-|ESB PROD 	|  `tjrprod01.conbraco.net`   	|   `10.129.33.145`	|
-|JOB PROD |  `tesbprod01.conbraco.net`  	|   `10.129.33.144`	|
-|Oracle Database |  `odb01.conbraco.net`  	|   `10.129.33.77` 	|
-|GIT Source Control |  `tsource.conbraco.net`  	|   `10.129.33.147`	|
+|    Server Name     |        IP Address         |   IP Address    |     |
+| ------------------ | ------------------------- | --------------- | --- |
+| TAC                | `tac01.conbraco.net`      | `10.129.33.137` |     |
+| ESB DEV            | `tesbdev01.conbraco.net`  | `10.129.33.146` |     |
+| ESB PROD           | `tjrprod01.conbraco.net`  | `10.129.33.145` |     |
+| JOB PROD           | `tesbprod01.conbraco.net` | `10.129.33.144` |     |
+| Oracle Database    | `odb01.conbraco.net`      | `10.129.33.77`  |     |
+| GIT Source Control | `tsource.conbraco.net`    | `10.129.33.147` |     |
 
 
 **2.0 Create Oracle Schema**
@@ -50,13 +50,13 @@ Talend ESB Installation Runbook
 > **Oracle Schema Detail**
 > Create following users/schema in Oracle DB for ESB Product installations.
 
-|  Schema Name 	| User   	| Service Name |host|port |Purpose  	|  
-|---	|---	|---	|---   |---   |---   |
-| `tacadmin`|   `tacadmin`| `talendadmin.conbraco.net`  |`odb01.conbraco.net`|`1521`|Talend Adminstration Center Database	|
-|`tacaudit `   	|   `tacaudit`    	| `talendadmin.conbraco.net`    |`odb01.conbraco.net`|`1521`|Audit Database	|
-| `tdqpadmin`   	|  `tdqpadmin`   	| `talendadmin.conbraco.net`    |`odb01.conbraco.net`|`1521`|DQ Portal Database	|
-| `tdqlspagobi` |  `tdqlspagobi`  	| `talendadmin.conbraco.net`    |`odb01.conbraco.net`|`1521`|Spago BI Databases	|
-| `tacamc` |  `tacamc`  	| `talendadmin.conbraco.net`  	  |`odb01.conbraco.net`|`1521`|AMC databases	|
+|  Schema Name  |     User      |        Service Name        |         host         |  port  |               Purpose                |     |
+| ------------- | ------------- | -------------------------- | -------------------- | ------ | ------------------------------------ | --- |
+| `tacadmin`    | `tacadmin`    | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | Talend Adminstration Center Database |     |
+| `tacaudit `   | `tacaudit`    | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | Audit Database                       |     |
+| `tdqpadmin`   | `tdqpadmin`   | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | DQ Portal Database                   |     |
+| `tdqlspagobi` | `tdqlspagobi` | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | Spago BI Databases                   |     |
+| `tacamc`      | `tacamc`      | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | AMC databases                        |     |
 
 > - **SQL Scripts**
 
@@ -622,12 +622,12 @@ Setup has finished installing Talend on your computer.
 > - On start up screen Configure parameters below as below.
 
 
-|Database type|Oracle|
-|---	|---	|
-|driver|`oracle.jdbc.driver.OracleDriver`|
-|url|`jdbc:oracle:thin:@//odb01.conbraco.net:1521/talendadmin.conbraco.net`|
-|username|`tacadmin`|
-|password|`xxxxxxx`|
+| Database type |                                 Oracle                                 |     |
+| ------------- | ---------------------------------------------------------------------- | --- |
+| driver        | `oracle.jdbc.driver.OracleDriver`                                      |     |
+| url           | `jdbc:oracle:thin:@//odb01.conbraco.net:1521/talendadmin.conbraco.net` |     |
+| username      | `tacadmin`                                                             |     |
+| password      | `xxxxxxx`                                                              |     |
 
 
 ** 4.0 Install Talend ESB on TAC Server**
@@ -675,25 +675,25 @@ Setup has finished installing Talend on your computer.
 
 ** 6.0 TAC Configurations **
 -------------
-|Screenshot|Details|
-|--|--|
-|![alt text](./images/TAC-login-01.jpg "Login")|Navigate to TAC URL <http://tac01.conbraco.net:8080/org.talend.administrator> and login.|
-|![alt text](./images/TAC-configurations-01.jpg "configurations")|Open Configurations|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-monitoring-01.jpg "monitoring")|Configure monitoring|
-|![alt text](./images/TAC-esbsam-01.jpg "ESBSAM")|Configure ESB Service Locator and SAM|
-|![alt text](./images/TAC-nexus-01.jpg "nexus")|Configure artifact Repository nexus|
-|![alt text](./images/TAC-iam-01.jpg "iam")|Configure Identity Access Management|
-|![alt text](./images/TAC-servreg-01.jpg "servreg")|Configure ESB Service Registry|
-|![alt text](./images/TAC-esbprov-01.jpg "esbprov")|Configure ESB Provisioning Service|
-|![alt text](./images/TAC-jobconductor-01.jpg "jobconductor")|Configure Job Conductor|
-|![alt text](./images/TAC-log4j-01.jpg "log4j")|Configure log4j|
-|![alt text](./images/TAC-smtp-01.jpg "smtp")|Configure smtp|
-|![alt text](./images/TAC-git-01.jpg "git")|Configure git|
-|![alt text](./images/TAC-userlib-01.jpg "userlib")|Configure user libraries|
-|![alt text](./images/TAC-creategitproject-01.jpg "creategitproject")|Create project in GIT|
-|![alt text](./images/TAC-projects-01.jpg "projects")|Navigate to  projects|
-|![alt text](./images/TAC-addnewprojects-01.jpg "addnewprojects")|Add new projects|
+|                              Screenshot                              |                                         Details                                          |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| ![alt text](./images/TAC-login-01.jpg "Login")                       | Navigate to TAC URL <http://tac01.conbraco.net:8080/org.talend.administrator> and login. |
+| ![alt text](./images/TAC-configurations-01.jpg "configurations")     | Open Configurations                                                                      |
+| ![alt text](./images/TAC-audit-01.jpg "configurations")              | Configure Audit                                                                          |
+| ![alt text](./images/TAC-monitoring-01.jpg "monitoring")             | Configure monitoring                                                                     |
+| ![alt text](./images/TAC-esbsam-01.jpg "ESBSAM")                     | Configure ESB Service Locator and SAM                                                    |
+| ![alt text](./images/TAC-nexus-01.jpg "nexus")                       | Configure artifact Repository nexus                                                      |
+| ![alt text](./images/TAC-iam-01.jpg "iam")                           | Configure Identity Access Management                                                     |
+| ![alt text](./images/TAC-servreg-01.jpg "servreg")                   | Configure ESB Service Registry                                                           |
+| ![alt text](./images/TAC-esbprov-01.jpg "esbprov")                   | Configure ESB Provisioning Service                                                       |
+| ![alt text](./images/TAC-jobconductor-01.jpg "jobconductor")         | Configure Job Conductor                                                                  |
+| ![alt text](./images/TAC-log4j-01.jpg "log4j")                       | Configure log4j                                                                          |
+| ![alt text](./images/TAC-smtp-01.jpg "smtp")                         | Configure smtp                                                                           |
+| ![alt text](./images/TAC-git-01.jpg "git")                           | Configure git                                                                            |
+| ![alt text](./images/TAC-userlib-01.jpg "userlib")                   | Configure user libraries                                                                 |
+| ![alt text](./images/TAC-creategitproject-01.jpg "creategitproject") | Create project in GIT                                                                    |
+| ![alt text](./images/TAC-projects-01.jpg "projects")                 | Navigate to  projects                                                                    |
+| ![alt text](./images/TAC-addnewprojects-01.jpg "addnewprojects")     | Add new projects                                                                         |
 
 
 
@@ -701,17 +701,17 @@ Setup has finished installing Talend on your computer.
 -------------
 #### :file_folder:TAC Server (`TAC01.conbraco.net`)
 
-|  Service Name 	| lcoation   	| Purpose  	|  
-|---	|---	|---	|
-|`talend-cmdline-6.3.1`|`/etc/init.d/`|Talend Comamnd Line Service|
-|`talend-dataprep-6.3.1`|`/etc/init.d/`|Talend Data Preparation Service|
-|`talend-dqdict-6.3.1`|`/etc/init.d/`|Talend Data Quality Service|
-|`talend-kafka-6.3.1`|`/etc/init.d/`| Kafka Service|
-|`talend-mongodb-6.3.1`|`/etc/init.d/`|mongodb Service|
-|`talend-rjs-6.3.1`|`/etc/init.d/`|Talend remote  Job Server DEV|
-|`talend-tac-6.3.1`|`/etc/init.d/`|Talend Adminstration Center Service|
-|`talend-tcomp-6.3.1`|`/etc/init.d/`|Talend Data Preparation component|
-|`tartifactrepo-nexus-6.3.1`|`/etc/init.d/`|Nexus Artifact repo|
+|        Service Name         |    lcoation    |               Purpose               |
+| --------------------------- | -------------- | ----------------------------------- |
+| `talend-cmdline-6.3.1`      | `/etc/init.d/` | Talend Comamnd Line Service         |
+| `talend-dataprep-6.3.1`     | `/etc/init.d/` | Talend Data Preparation Service     |
+| `talend-dqdict-6.3.1`       | `/etc/init.d/` | Talend Data Quality Service         |
+| `talend-kafka-6.3.1`        | `/etc/init.d/` | Kafka Service                       |
+| `talend-mongodb-6.3.1`      | `/etc/init.d/` | mongodb Service                     |
+| `talend-rjs-6.3.1`          | `/etc/init.d/` | Talend remote  Job Server DEV       |
+| `talend-tac-6.3.1`          | `/etc/init.d/` | Talend Adminstration Center Service |
+| `talend-tcomp-6.3.1`        | `/etc/init.d/` | Talend Data Preparation component   |
+| `tartifactrepo-nexus-6.3.1` | `/etc/init.d/` | Nexus Artifact repo                 |
 
 #### :file_folder:ESB runtime (`TESBDEV01.conbraco.net` and `TESBPROD01.conbraco.net`)
 
@@ -723,6 +723,23 @@ Setup has finished installing Talend on your computer.
 
 #### :file_folder:Job Server (`TAC01.conbraco.net` and `TJRPROD01.conbraco.net`)
 
-|  Service Name 	| lcoation   	| Purpose  	|  
-|---	|---	|---	|
-|`talend-<env>jobserver01-service`|`/etc/init.d/`|Talend JOB  Server|
+|           Service Name            |    lcoation    |      Purpose       |
+| --------------------------------- | -------------- | ------------------ |
+| `talend-<env>jobserver01-service` | `/etc/init.d/` | Talend JOB  Server |
+
+
+** 7.0 Service URL Details **
+-------------
+#### :file_folder: URL's
+
+|        Service Name        |                                  URL                                  |  Default User Name  |
+| -------------------------- | --------------------------------------------------------------------- | ------------------- |
+| TAC                        | <http://tac01.conbraco.net:8080/org.talend.administrator>             | `admin@company.com` |
+| Nexus                      | <http://tac01.conbraco.net:8081/nexus/>                               | `admin`             |
+| Nexus Snapshot             | <http://tac01.conbraco.net:8081/nexus/content/repositories/snapshots> | `admin`             |
+| Nexus Release              | <http://tac01.conbraco.net:8081/nexus/content/repositories/releases>  | `admin`             |
+| Apache Syncope Console IDM | <http://tac01.conbraco.net:8080/syncope-console>                      | `admin@company.com` |
+| Active MQ Console          | <http://tesbdev01.conbraco.net:8161/admin/>                           | `admin`             |
+| GIT                        | <http://tsource.conbraco.net/>                                        |                     |
+| Data Quality Portal        | <http://tac01.conbraco.net:8580/tdqportal>                            |                     |
+| karaf/ESB Runtime          | `ssh TESBDEV01.conbraco.net:8101`                                     | `tadmin`            |
