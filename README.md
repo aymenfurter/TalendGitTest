@@ -1,13 +1,26 @@
 
-Talend ESB Installation document
+Talend ESB Installation Runbook
 ===================
 ![Talend Conbraco](./images/TalendConbraco.jpg)
 
-> **Steps:**
+
+
+## DOCUMENT
+
+|                 |                                          |
+| --------------- | ---------------------------------------- |
+| DOCUMENT AUTHOR | Milan Das (mdas@talend.com)              |
+| DOCUMENT OWNER  | Adam Presley (adam.presley@conbraco.com) |
+| DATE CREATED    | Jun 26, 2017                             |
+| LAST UPDATED    | Jun 28, 2017                             |
+| COMPANY         | Conbraco Industries Inc                  |
+
+
+
+## High leve
 
 > - Operating System and Oracle JDK 1.8 installation
 > - Create Oracle Schema
-> - Create DIrectories
 > - Install Talend Product on TAC  Server
 > - Install Talend ESB on ESB Server(DEV/PRD)
 > - Install ESB Runtime(DEV/PRD)
@@ -586,19 +599,19 @@ child process started successfully, parent exiting
 
 Setup has finished installing Talend on your computer.
 ```
-#### :file_folder: Crete following Direcories
+#### :file_folder: Create following directories
 > - Open Unix prompt
 > - Create directories below owned by `talenduser:talendgroup`
 
-|   Component   |                                     Direcories                                     |
+|   Component   |                                     Directories                                     |
 | ------------- | ---------------------------------------------------------------------------------- |
 | Audit         | `/opt/Talend/Audit/reports`                                                        |
-| CommandLine   | `/opt/Talend/CommandLine/exports`\`/opt/Talend/CommandLine/userComponent`          |
-| Job Conductor | `/opt/Talend/Administrator/generatedJobs`\/opt/Talend/Administrator/executionLogs` |
-| Log4j         | `/opt/Talend/log/technical.log`\`/opt/Talend/log/business.log`                     |
+| CommandLine   | `/opt/Talend/CommandLine/exports` and `/opt/Talend/CommandLine/userComponent`          |
+| Job Conductor | `/opt/Talend/Administrator/generatedJobs` and `/opt/Talend/Administrator/executionLogs` |
+| Log4j         | `/opt/Talend/log/technical.log` and `/opt/Talend/log/business.log`                     |
 
 
-#### :file_folder:Configure TAC  Server
+#### :file_folder: Configure TAC  Server
 
 > **Navigate to TAC URL:**
 
@@ -678,6 +691,9 @@ Setup has finished installing Talend on your computer.
 |![alt text](./images/TAC-smtp-01.jpg "smtp")|Configure smtp|
 |![alt text](./images/TAC-git-01.jpg "git")|Configure git|
 |![alt text](./images/TAC-userlib-01.jpg "userlib")|Configure user libraries|
+|![alt text](./images/TAC-creategitproject-01.jpg "creategitproject")|Create project in GIT|
+|![alt text](./images/TAC-projects-01.jpg "projects")|Navigate to  projects|
+|![alt text](./images/TAC-addnewprojects-01.jpg "addnewprojects")|Add new projects|
 
 
 
