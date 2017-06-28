@@ -1,11 +1,12 @@
+
 Talend ESB Installation document
 ===================
 ![Talend Conbraco](http://tsource.conbraco.net/tadmin/Administration/raw/master/images/TalendConbraco.jpg)
 
 > **Steps:**
 
-> - Prepare Ubuntu OS and install JDK
-> - Create following Oracle User
+> - Operating System and Oracle JDK 1.8 installation
+> - Create Oracle Schema
 > - Create DIrectories
 > - Install Talend Product on TAC  Server
 > - Install Talend ESB on ESB Server(DEV/PRD)
@@ -14,8 +15,9 @@ Talend ESB Installation document
 > - Create GIT Project
 > - Service Details
 
-**Prepare Ubuntu OS and install JDK**
+**1.0 Operating System and Oracle JDK 1.8 installation**
 -------------
+
 > **Server Detail**
 > Following the server details
 
@@ -29,8 +31,9 @@ Talend ESB Installation document
 |GIT Source Control |  `tsource.conbraco.net`  	|   `10.129.33.147`	|
 
 
-**Create Oracle Schema**
+**2.0 Create Oracle Schema**
 -------------
+
 > **Oracle Schema Detail**
 > Create following users/schema in Oracle DB for ESB Product installations.
 
@@ -64,7 +67,7 @@ CREATE USER tacamc IDENTIFIED BY XXXXXXXX;
 grant CONNECT, RESOURCE to tacamc;
 ```
 
-**Install Talend Product on TAC  Server**
+3.0 **Install Talend Product on TAC  Server**
 -------------
 
 #### :file_folder: Install  TAC  Server
@@ -585,13 +588,13 @@ Setup has finished installing Talend on your computer.
 
 #### :file_folder:Configure TAC  Server
 
-> **Open TAC URL:**
+> **Navigate to TAC URL:**
 
 > - Download `ojdbc8.jar` from [Oracle](http://www.oracle.com/technetwork/database/features/jdbc/jdbc-ucp-122-3110062.html)  and copy to `/opt/Talend-6.3.1/tac/apache-tomcat/endorsed`
 > - Remove all other copy of `ojdbc*.jar` file from all sub directories under `/opt/Talend-6.3.1/tac/`
 > - Restart TAC: `sudo /etc/init.d/talend-tac-6.3.1 stop` and `sudo /etc/init.d/talend-tac-6.3.1 start`
 > - Navigate to [Talend Administration Center](http://tac01.conbraco.net:8080/org.talend.administrator/)
-> - Configure parameters below as in the image.
+> - On start up screen Configure parameters below as below.
 
 
 |Database type|Oracle|
@@ -602,10 +605,10 @@ Setup has finished installing Talend on your computer.
 |password|`xxxxxxx`|
 
 
-**Install Talend ESB on TAC Server**
+** 4.0 Install Talend ESB on TAC Server**
 -------------
 #### :file_folder:Configure TAC  Server
-> - login to unix console as `talenduser` ( if `\opt` owened by `talenduser` account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-ESB-V6.3.1-20161215184526.zip` into `/opt/Talend-6.3.1/`. It should create a directory `Talend-ESB-V6.3.1`
+> - login to unix console as `talenduser` ( if `\opt` owened by `talenduser` account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-ESB-V6.3.1-20161215184526.zip -d /opt/`  into `/opt/Talend-6.3.1/`. It should create a directory `Talend-ESB-V6.3.1`
 > - start Talend ESB
 >> - Login to Unix shell at start `trun`
 >> - `/opt/Talend-6.3.1/Talend-ESB-V6.3.1/container/bin/trun`
@@ -616,10 +619,10 @@ Setup has finished installing Talend on your computer.
 > - Create  Service for ESB. Open a Unix a console and crete the follwoing link below.
 >> - Create Service `ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbprod01-service /etc/init.d/`
 
-**Install Talend ESB Runtime & Active MQ**
+** 5.0 Install Talend ESB Runtime & Active MQ**
 -------------
 #### :file_folder:Configure ESB runtime Server
-> - login to unix console as `root` ( if `\opt` owened by root account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-Runtime-V6.3.1-20161215184526.zip` into `/opt`. It should create a directory `Talend-ESB-V6.3.1`
+> - login to unix console as `root` ( if `\opt` owened by root account on ESB server) and unzip  `unzip /home/miland/installation-files/Talend-Runtime-V6.3.1-20161215184526.zip -d /opt/` into `/opt`. It should create a directory `Talend-ESB-V6.3.1`
 > - create  user `talenduser` and group `talendgroup`
 >> - `adduser talenduser`
 >> - `groupadd -g 1004 talendgroup`
@@ -643,8 +646,39 @@ Setup has finished installing Talend on your computer.
 |  Server 	| Script   	| Purpose  	|  
 |---	|---	|---	|
 |ESB|`ln -s /opt/Talend-Runtime-V6.3.1/bin/talend-esb-tesbdev01-service /etc/init.d/`|ESB server service|
-|ActtiveMQ|'ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/'|Active MQ Service|
-**Service Details **
+|ActtiveMQ|`ln -s /opt/activemq.5.14.1/bin/linux-x86-64/activemq /etc/init.d/`|Active MQ Service|
+
+** 6.0 TAC Configurations **
+-------------
+|Screenshot|Details|
+|--|--|
+|![alt text](.\images\TAC-login-01.jpg "Login")|Navigate to TAC URL <http://tac01.conbraco.net:8080/org.talend.administrator> and login.|
+|![alt text](.\images\TAC-configurations-01.jpg "configurations")|Open Configurations|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-commandline-01.jpg "configurations")|Configure Command Line|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+
+
+
+
+** 7.0 Service Details **
 -------------
 #### :file_folder:TAC Server (`TAC01.conbraco.net`)
 
@@ -655,9 +689,10 @@ Setup has finished installing Talend on your computer.
 |`talend-dqdict-6.3.1`|`/etc/init.d/`|Talend Data Quality Service|
 |`talend-kafka-6.3.1`|`/etc/init.d/`| Kafka Service|
 |`talend-mongodb-6.3.1`|`/etc/init.d/`|mongodb Service|
-|`talend-rjs-6.3.1`|`/etc/init.d/`|Talend Comamnd Line Service|
+|`talend-rjs-6.3.1`|`/etc/init.d/`|Talend remote  Job Server DEV|
 |`talend-tac-6.3.1`|`/etc/init.d/`|Talend Adminstration Center Service|
-|`talend-tcomp-6.3.1`|`/etc/init.d/`|Talend component Service|
+|`talend-tcomp-6.3.1`|`/etc/init.d/`|Talend Data Preparation component|
+|`tartifactrepo-nexus-6.3.1`|`/etc/init.d/`|Nexus Artifact repo|
 
 #### :file_folder:ESB runtime (`TESBDEV01.conbraco.net` and `TESBPROD01.conbraco.net`)
 
