@@ -1,7 +1,7 @@
 
 Talend ESB Installation document
 ===================
-![Talend Conbraco](http://tsource.conbraco.net/tadmin/Administration/raw/master/images/TalendConbraco.jpg)
+![Talend Conbraco](./images/TalendConbraco.jpg)
 
 > **Steps:**
 
@@ -69,6 +69,7 @@ grant CONNECT, RESOURCE to tacamc;
 
 3.0 **Install Talend Product on TAC  Server**
 -------------
+
 
 #### :file_folder: Install  TAC  Server
 
@@ -585,6 +586,17 @@ child process started successfully, parent exiting
 
 Setup has finished installing Talend on your computer.
 ```
+#### :file_folder: Crete following Direcories
+> - Open Unix prompt
+> - Create directories below owned by `talenduser:talendgroup`
+
+|   Component   |                                     Direcories                                     |
+| ------------- | ---------------------------------------------------------------------------------- |
+| Audit         | `/opt/Talend/Audit/reports`                                                        |
+| CommandLine   | `/opt/Talend/CommandLine/exports`\`/opt/Talend/CommandLine/userComponent`          |
+| Job Conductor | `/opt/Talend/Administrator/generatedJobs`\/opt/Talend/Administrator/executionLogs` |
+| Log4j         | `/opt/Talend/log/technical.log`\`/opt/Talend/log/business.log`                     |
+
 
 #### :file_folder:Configure TAC  Server
 
