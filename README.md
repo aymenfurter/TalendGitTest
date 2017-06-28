@@ -655,26 +655,17 @@ Setup has finished installing Talend on your computer.
 |![alt text](./images/TAC-login-01.jpg "Login")|Navigate to TAC URL <http://tac01.conbraco.net:8080/org.talend.administrator> and login.|
 |![alt text](./images/TAC-configurations-01.jpg "configurations")|Open Configurations|
 |![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
-
+|![alt text](./images/TAC-monitoring-01.jpg "monitoring")|Configure monitoring|
+|![alt text](./images/TAC-esbsam-01.jpg "ESBSAM")|Configure ESB Service Locator and SAM|
+|![alt text](./images/TAC-nexus-01.jpg "nexus")|Configure artifact Repository nexus|
+|![alt text](./images/TAC-iam-01.jpg "iam")|Configure Identity Access Management|
+|![alt text](./images/TAC-servreg-01.jpg "servreg")|Configure ESB Service Registry|
+|![alt text](./images/TAC-esbprov-01.jpg "esbprov")|Configure ESB Provisioning Service|
+|![alt text](./images/TAC-jobconductor-01.jpg "jobconductor")|Configure Job Conductor|
+|![alt text](./images/TAC-log4j-01.jpg "log4j")|Configure log4j|
+|![alt text](./images/TAC-smtp-01.jpg "smtp")|Configure smtp|
+|![alt text](./images/TAC-git-01.jpg "git")|Configure git|
+|![alt text](./images/TAC-userlib-01.jpg "userlib")|Configure user libraries|
 
 
 
