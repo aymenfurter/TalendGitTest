@@ -652,28 +652,28 @@ Setup has finished installing Talend on your computer.
 -------------
 |Screenshot|Details|
 |--|--|
-|![alt text](.\images\TAC-login-01.jpg "Login")|Navigate to TAC URL <http://tac01.conbraco.net:8080/org.talend.administrator> and login.|
-|![alt text](.\images\TAC-configurations-01.jpg "configurations")|Open Configurations|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-commandline-01.jpg "configurations")|Configure Command Line|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
-|![alt text](.\images\TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-login-01.jpg "Login")|Navigate to TAC URL <http://tac01.conbraco.net:8080/org.talend.administrator> and login.|
+|![alt text](TAC-configurations-01.jpg "configurations")|Open Configurations|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
+|![alt text](./images/TAC-audit-01.jpg "configurations")|Configure Audit|
 
 
 
