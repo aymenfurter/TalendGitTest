@@ -601,7 +601,7 @@ Setup has finished installing Talend on your computer.
 ```
 #### :file_folder: Create following directories
 > - Open Unix prompt
-> - Create directories below owned by `talenduser:talendgroup`
+> - Create following directories  owned by `talenduser:talendgroup`
 
 |   Component   |                                     Directories                                     |
 | ------------- | ---------------------------------------------------------------------------------- |
@@ -662,9 +662,9 @@ Setup has finished installing Talend on your computer.
 >> - `feature:install service-wrapper`
 >> - `wrapper:install -n talend-esb-tesbdev01`
 >> - `feature:install webconsole`
-> - Change following Propery
+> - Change following Properties
 
-|                                     FileName                                      |                                                      Property Name                                                      | Property value |     | 
+|                                     FileName                                      |                                                      Property Name                                                      | Property value |     |
 | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------- | --- |
 | `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.authorization.pep.cfg`             | `tesb.pdp.address = http://TAC01.conbraco.net:8040/services/pdp/authorize`                                              |                |     |
 | `/opt/Talend-Runtime-V6.3.1/etc/org.apache.cxf.xkms.client.cfg`                   | `xkms.endpoint=http://TAC01.conbraco.net:8040/services/XKMS/`                                                           |                |     |
