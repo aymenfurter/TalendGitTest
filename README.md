@@ -4,19 +4,10 @@ Talend ESB Installation Runbook
 
 
 
-## DOCUMENT
-
-|                 |                                          |
-| --------------- | ---------------------------------------- |
-| DOCUMENT AUTHOR | Milan Das (mdas@talend.com)              |
-| DOCUMENT OWNER  | Adam Presley (adam.presley@mycompany.com) |
-| DATE CREATED    | Jun 26, 2017                             |
-| LAST UPDATED    | Jun 28, 2017                             |
-| COMPANY         | mycompany Industries Inc                  |
 
 
 
-## High leve
+## High level
 
 > - Operating System and Oracle JDK 1.8 installation
 > - Create Oracle Schema
