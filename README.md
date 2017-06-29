@@ -758,6 +758,6 @@ Setup has finished installing Talend on your computer.
 | Apache Syncope Console IDM | <http://tac01.mycompany.net:8080/syncope-console>                      | `admin@company.com` |     |
 | Active MQ Console          | <http://tesbdev01.mycompany.net:8161/admin/>                           | `admin`             |     |
 | GIT                        | <http://tsource.mycompany.net/>                                        |                     |     |
-| Data Quality Portal        | <http://tac01.mycompany.net:8580/tdqportal>                            |                     |     |
+| Data Quality Portal        | <http://tac01.mycompany.net:8080/tdqportal>                            |                     |     |
 | karaf/ESB Runtime          | `ssh TESBDEV01.mycompany.net:8101`                                     | `tadmin`            |     |
 | ESB Runtime webconsole     | <http://tesbdev01.mycompany.net:8040/system/console>                   | `tadmin`            |     |
