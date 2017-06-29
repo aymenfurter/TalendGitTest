@@ -735,7 +735,7 @@ Setup has finished installing Talend on your computer.
 |  Service Name 	| lcoation   	| Purpose  	|  
 |---	|---	|---	|
 |`talend-esb-tesb<xxx>01-service`|`/etc/init.d/`|Talend Comamnd Line Service|
-|`activemq`|`/etc/init.d/`|Talend Data Preparation Service|
+|`activemq`|`/etc/init.d/`|Active MQ Service|
 
 
 #### :file_folder:Job Server (`TAC01.mycompany.net` and `TJRPROD01.mycompany.net`)
