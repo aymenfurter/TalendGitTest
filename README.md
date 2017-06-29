@@ -1,7 +1,6 @@
 
 Talend ESB Installation Runbook
 ===================
-![Talend Conbraco](./images/TalendConbraco.jpg)
 
 
 
@@ -10,10 +9,10 @@ Talend ESB Installation Runbook
 |                 |                                          |
 | --------------- | ---------------------------------------- |
 | DOCUMENT AUTHOR | Milan Das (mdas@talend.com)              |
-| DOCUMENT OWNER  | Adam Presley (adam.presley@conbraco.com) |
+| DOCUMENT OWNER  | Adam Presley (adam.presley@mycompany.com) |
 | DATE CREATED    | Jun 26, 2017                             |
 | LAST UPDATED    | Jun 28, 2017                             |
-| COMPANY         | Conbraco Industries Inc                  |
+| COMPANY         | mycompany Industries Inc                  |
 
 
 
@@ -36,12 +35,12 @@ Talend ESB Installation Runbook
 
 |    Server Name     |        IP Address         |   IP Address    |     |
 | ------------------ | ------------------------- | --------------- | --- |
-| TAC                | `tac01.conbraco.net`      | `10.129.33.137` |     |
-| ESB DEV            | `tesbdev01.conbraco.net`  | `10.129.33.146` |     |
-| ESB PROD           | `tjrprod01.conbraco.net`  | `10.129.33.145` |     |
-| JOB PROD           | `tesbprod01.conbraco.net` | `10.129.33.144` |     |
-| Oracle Database    | `odb01.conbraco.net`      | `10.129.33.77`  |     |
-| GIT Source Control | `tsource.conbraco.net`    | `10.129.33.147` |     |
+| TAC                | `tac01.mycompany.net`      | `10.129.33.137` |     |
+| ESB DEV            | `tesbdev01.mycompany.net`  | `10.129.33.146` |     |
+| ESB PROD           | `tjrprod01.mycompany.net`  | `10.129.33.145` |     |
+| JOB PROD           | `tesbprod01.mycompany.net` | `10.129.33.144` |     |
+| Oracle Database    | `odb01.mycompany.net`      | `10.129.33.77`  |     |
+| GIT Source Control | `tsource.mycompany.net`    | `10.129.33.147` |     |
 
 
 **2.0 Create Oracle Schema**
@@ -52,11 +51,11 @@ Talend ESB Installation Runbook
 
 |  Schema Name  |     User      |        Service Name        |         host         |  port  |               Purpose                |     |
 | ------------- | ------------- | -------------------------- | -------------------- | ------ | ------------------------------------ | --- |
-| `tacadmin`    | `tacadmin`    | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | Talend Adminstration Center Database |     |
-| `tacaudit `   | `tacaudit`    | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | Audit Database                       |     |
-| `tdqpadmin`   | `tdqpadmin`   | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | DQ Portal Database                   |     |
-| `tdqlspagobi` | `tdqlspagobi` | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | Spago BI Databases                   |     |
-| `tacamc`      | `tacamc`      | `talendadmin.conbraco.net` | `odb01.conbraco.net` | `1521` | AMC databases                        |     |
+| `tacadmin`    | `tacadmin`    | `talendadmin.mycompany.net` | `odb01.mycompany.net` | `1521` | Talend Adminstration Center Database |     |
+| `tacaudit `   | `tacaudit`    | `talendadmin.mycompany.net` | `odb01.mycompany.net` | `1521` | Audit Database                       |     |
+| `tdqpadmin`   | `tdqpadmin`   | `talendadmin.mycompany.net` | `odb01.mycompany.net` | `1521` | DQ Portal Database                   |     |
+| `tdqlspagobi` | `tdqlspagobi` | `talendadmin.mycompany.net` | `odb01.mycompany.net` | `1521` | Spago BI Databases                   |     |
+| `tacamc`      | `tacamc`      | `talendadmin.mycompany.net` | `odb01.mycompany.net` | `1521` | AMC databases                        |     |
 
 > - **SQL Scripts**
 
@@ -216,11 +215,11 @@ Talend Administration Center - Database Configuration
 This page enables you to configure Talend Administration Center to use an
 existing Oracle database.
 
-Database host [localhost]: odb01.conbraco.net
+Database host [localhost]: odb01.mycompany.net
 
 Database port [1521]:
 
-Database Name (SID) [talend_administrator]: talendadmin.conbraco.net
+Database Name (SID) [talend_administrator]: talendadmin.mycompany.net
 
 User Name [talend]: tacadmin
 
@@ -240,7 +239,7 @@ down or scheduled Jobs are not able to run.
 Send Email Notifications [Y/n]: y
 
 
-SMTP mail server: [smtp.company.com]: mail.conbraco.com
+SMTP mail server: [smtp.company.com]: mail.mycompany.com
 
 SMTP port: [25]:
 
@@ -403,11 +402,11 @@ DB Version:
 [3] ORACLE_12
 Please choose an option [1] : 3
 
-Database host name (IP): [localhost]: odb01.conbraco.net
+Database host name (IP): [localhost]: odb01.mycompany.net
 
 Database port: [1521]:
 
-Servicename: [talend_dq]: talendadmin.conbraco.net
+Servicename: [talend_dq]: talendadmin.mycompany.net
 
 User name: [sysdba]: tdqpadmin
 
@@ -618,14 +617,14 @@ Setup has finished installing Talend on your computer.
 > - Download `ojdbc8.jar` from [Oracle](http://www.oracle.com/technetwork/database/features/jdbc/jdbc-ucp-122-3110062.html)  and copy to `/opt/Talend-6.3.1/tac/apache-tomcat/endorsed`
 > - Remove all other copy of `ojdbc*.jar` file from all sub directories under `/opt/Talend-6.3.1/tac/`
 > - Restart TAC: `sudo /etc/init.d/talend-tac-6.3.1 stop` and `sudo /etc/init.d/talend-tac-6.3.1 start`
-> - Navigate to [Talend Administration Center](http://tac01.conbraco.net:8080/org.talend.administrator/)
+> - Navigate to [Talend Administration Center](http://tac01.mycompany.net:8080/org.talend.administrator/)
 > - On start up screen Configure parameters below as below.
 
 
 | Database type |                                 Oracle                                 |     |
 | ------------- | ---------------------------------------------------------------------- | --- |
 | driver        | `oracle.jdbc.driver.OracleDriver`                                      |     |
-| url           | `jdbc:oracle:thin:@//odb01.conbraco.net:1521/talendadmin.conbraco.net` |     |
+| url           | `jdbc:oracle:thin:@//odb01.mycompany.net:1521/talendadmin.mycompany.net` |     |
 | username      | `tacadmin`                                                             |     |
 | password      | `xxxxxxx`                                                              |     |
 
@@ -666,27 +665,27 @@ Setup has finished installing Talend on your computer.
 
 |                                     FileName                                      |                                                      Property Name                                                      | Property value |     |
 | --------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- | -------------- | --- |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.authorization.pep.cfg`             | `tesb.pdp.address = http://TAC01.conbraco.net:8040/services/pdp/authorize`                                              |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.apache.cxf.xkms.client.cfg`                   | `xkms.endpoint=http://TAC01.conbraco.net:8040/services/XKMS/`                                                           |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.sam.agent.cfg`                     | `service.url=http://TAC01.conbraco.net:8040/services/MonitoringServiceSOAP`                                             |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.auxiliary.storage.client.rest.cfg` | `auxiliary.storage.service.url = http://TAC01.conbraco.net:8040/services/AuxStorageService`                             |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.auxiliary.storage.client.rest.cfg` | `sts.wsdl.location = http://TAC01.conbraco.net:8042/services/SecurityTokenService/UT?wsdl`                              |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.ops4j.pax.url.mvn.cfg`                        | `    http://admin:Talend123@TAC01.conbraco.net:8081/nexus/content/repositories/releases@id=tesb.release,\`              |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.ops4j.pax.url.mvn.cfg`                        | `    http://admin:Talend123@TAC01.conbraco.net:8081/nexus/content/repositories/snapshots@snapshots@id=tesb.snapshot, \` |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.job.client.sts.cfg`                | `#sts.wsdl.location = http://TAC01.conbraco.net:8080/SecurityTokenService/UT?wsdl`                                      |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.job.client.sts.cfg`                | `sts.wsdl.location = http://TAC01.conbraco.net:8040/services/SecurityTokenService/UT?wsdl`                              |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.job.client.sts.cfg`                | `sts.x509.wsdl.location = http://TAC01.conbraco.net:8040/services/SecurityTokenService/X509?wsdl`                       |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.registry.client.wsdl.cfg`          | `registry.url=http://TAC01.conbraco.net:8040/services/registry/lookup`                                                  |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.registry.client.wsdl.cfg`          | `sts.wsdl.location = http://TAC01.conbraco.net:8042/services/SecurityTokenService/UT?wsdl`                              |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.locator.cfg`                       | `locator.endpoints=TAC01.conbraco.net:2181`                                                                             |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.locator.cfg`                       | `endpoint.http.prefix=http://TAC01.conbraco.net:8040/services`                                                          |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.locator.cfg`                       | `endpoint.https.prefix=https://TAC01.conbraco.net:9001/services`                                                        |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.registry.client.policy.cfg`        | `registry.url=http://TAC01.conbraco.net:8040/services/registry/lookup`                                                  |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.sts.server.cfg`                    | `tidmServiceUrl=http://TAC01.conbraco.net:8080/syncope/rest/`                                                           |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.apache.karaf.management.cfg`                  | `rmiRegistryHost = TESBDEV01.conbraco.net`                                                                              |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.apache.karaf.management.cfg`                  | `rmiServerHost = TESBDEV01.conbraco.net`                                                                                |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/talend-esb-tesbdev01-wrapper.conf`                | `wrapper.java.additional.10=-Djava.rmi.server.hostname=TESBDEV01.conbraco.net`                                          |                |     |
-| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.remote.jobserver.server.cfg`           | `org.talend.remote.jobserver.server.TalendJobServer.LOCAL_HOST=TESBDEV01.conbraco.net`                                  |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.authorization.pep.cfg`             | `tesb.pdp.address = http://TAC01.mycompany.net:8040/services/pdp/authorize`                                              |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.apache.cxf.xkms.client.cfg`                   | `xkms.endpoint=http://TAC01.mycompany.net:8040/services/XKMS/`                                                           |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.sam.agent.cfg`                     | `service.url=http://TAC01.mycompany.net:8040/services/MonitoringServiceSOAP`                                             |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.auxiliary.storage.client.rest.cfg` | `auxiliary.storage.service.url = http://TAC01.mycompany.net:8040/services/AuxStorageService`                             |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.auxiliary.storage.client.rest.cfg` | `sts.wsdl.location = http://TAC01.mycompany.net:8042/services/SecurityTokenService/UT?wsdl`                              |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.ops4j.pax.url.mvn.cfg`                        | `    http://admin:Talend123@TAC01.mycompany.net:8081/nexus/content/repositories/releases@id=tesb.release,\`              |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.ops4j.pax.url.mvn.cfg`                        | `    http://admin:Talend123@TAC01.mycompany.net:8081/nexus/content/repositories/snapshots@snapshots@id=tesb.snapshot, \` |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.job.client.sts.cfg`                | `#sts.wsdl.location = http://TAC01.mycompany.net:8080/SecurityTokenService/UT?wsdl`                                      |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.job.client.sts.cfg`                | `sts.wsdl.location = http://TAC01.mycompany.net:8040/services/SecurityTokenService/UT?wsdl`                              |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.job.client.sts.cfg`                | `sts.x509.wsdl.location = http://TAC01.mycompany.net:8040/services/SecurityTokenService/X509?wsdl`                       |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.registry.client.wsdl.cfg`          | `registry.url=http://TAC01.mycompany.net:8040/services/registry/lookup`                                                  |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.registry.client.wsdl.cfg`          | `sts.wsdl.location = http://TAC01.mycompany.net:8042/services/SecurityTokenService/UT?wsdl`                              |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.locator.cfg`                       | `locator.endpoints=TAC01.mycompany.net:2181`                                                                             |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.locator.cfg`                       | `endpoint.http.prefix=http://TAC01.mycompany.net:8040/services`                                                          |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.locator.cfg`                       | `endpoint.https.prefix=https://TAC01.mycompany.net:9001/services`                                                        |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.registry.client.policy.cfg`        | `registry.url=http://TAC01.mycompany.net:8040/services/registry/lookup`                                                  |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.esb.sts.server.cfg`                    | `tidmServiceUrl=http://TAC01.mycompany.net:8080/syncope/rest/`                                                           |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.apache.karaf.management.cfg`                  | `rmiRegistryHost = TESBDEV01.mycompany.net`                                                                              |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.apache.karaf.management.cfg`                  | `rmiServerHost = TESBDEV01.mycompany.net`                                                                                |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/talend-esb-tesbdev01-wrapper.conf`                | `wrapper.java.additional.10=-Djava.rmi.server.hostname=TESBDEV01.mycompany.net`                                          |                |     |
+| `/opt/Talend-Runtime-V6.3.1/etc/org.talend.remote.jobserver.server.cfg`           | `org.talend.remote.jobserver.server.TalendJobServer.LOCAL_HOST=TESBDEV01.mycompany.net`                                  |                |     |
 
 > - Install  Active MQ Server
 >> - copy `/installation-files/Talend-ESB-V6.3.1/activemq` to `/opt`
@@ -704,7 +703,7 @@ Setup has finished installing Talend on your computer.
 -------------
 |                              Screenshot                              |                                         Details                                          |
 | -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| ![alt text](./images/TAC-login-01.jpg "Login")                       | Navigate to TAC URL <http://tac01.conbraco.net:8080/org.talend.administrator> and login. |
+| ![alt text](./images/TAC-login-01.jpg "Login")                       | Navigate to TAC URL <http://tac01.mycompany.net:8080/org.talend.administrator> and login. |
 | ![alt text](./images/TAC-configurations-01.jpg "configurations")     | Open Configurations                                                                      |
 | ![alt text](./images/TAC-audit-01.jpg "configurations")              | Configure Audit                                                                          |
 | ![alt text](./images/TAC-monitoring-01.jpg "monitoring")             | Configure monitoring                                                                     |
@@ -726,7 +725,7 @@ Setup has finished installing Talend on your computer.
 
 ** 7.0 Service Details **
 -------------
-#### :file_folder:TAC Server (`TAC01.conbraco.net`)
+#### :file_folder:TAC Server (`TAC01.mycompany.net`)
 
 |        Service Name         |    lcoation    |               Purpose               |
 | --------------------------- | -------------- | ----------------------------------- |
@@ -740,7 +739,7 @@ Setup has finished installing Talend on your computer.
 | `talend-tcomp-6.3.1`        | `/etc/init.d/` | Talend Data Preparation component   |
 | `tartifactrepo-nexus-6.3.1` | `/etc/init.d/` | Nexus Artifact repo                 |
 
-#### :file_folder:ESB runtime (`TESBDEV01.conbraco.net` and `TESBPROD01.conbraco.net`)
+#### :file_folder:ESB runtime (`TESBDEV01.mycompany.net` and `TESBPROD01.mycompany.net`)
 
 |  Service Name 	| lcoation   	| Purpose  	|  
 |---	|---	|---	|
@@ -748,7 +747,7 @@ Setup has finished installing Talend on your computer.
 |`activemq`|`/etc/init.d/`|Talend Data Preparation Service|
 
 
-#### :file_folder:Job Server (`TAC01.conbraco.net` and `TJRPROD01.conbraco.net`)
+#### :file_folder:Job Server (`TAC01.mycompany.net` and `TJRPROD01.mycompany.net`)
 
 |           Service Name            |    lcoation    |      Purpose       |
 | --------------------------------- | -------------- | ------------------ |
@@ -761,13 +760,13 @@ Setup has finished installing Talend on your computer.
 
 |        Service Name        |                                  URL                                  |  Default User Name  |     |
 | -------------------------- | --------------------------------------------------------------------- | ------------------- | --- |
-| TAC                        | <http://tac01.conbraco.net:8080/org.talend.administrator>             | `admin@company.com` |     |
-| Nexus                      | <http://tac01.conbraco.net:8081/nexus/>                               | `admin`             |     |
-| Nexus Snapshot             | <http://tac01.conbraco.net:8081/nexus/content/repositories/snapshots> | `admin`             |     |
-| Nexus Release              | <http://tac01.conbraco.net:8081/nexus/content/repositories/releases>  | `admin`             |     |
-| Apache Syncope Console IDM | <http://tac01.conbraco.net:8080/syncope-console>                      | `admin@company.com` |     |
-| Active MQ Console          | <http://tesbdev01.conbraco.net:8161/admin/>                           | `admin`             |     |
-| GIT                        | <http://tsource.conbraco.net/>                                        |                     |     |
-| Data Quality Portal        | <http://tac01.conbraco.net:8580/tdqportal>                            |                     |     |
-| karaf/ESB Runtime          | `ssh TESBDEV01.conbraco.net:8101`                                     | `tadmin`            |     |
-| ESB Runtime webconsole     | <http://tesbdev01.conbraco.net:8040/system/console>                   | `tadmin`            |     |
+| TAC                        | <http://tac01.mycompany.net:8080/org.talend.administrator>             | `admin@company.com` |     |
+| Nexus                      | <http://tac01.mycompany.net:8081/nexus/>                               | `admin`             |     |
+| Nexus Snapshot             | <http://tac01.mycompany.net:8081/nexus/content/repositories/snapshots> | `admin`             |     |
+| Nexus Release              | <http://tac01.mycompany.net:8081/nexus/content/repositories/releases>  | `admin`             |     |
+| Apache Syncope Console IDM | <http://tac01.mycompany.net:8080/syncope-console>                      | `admin@company.com` |     |
+| Active MQ Console          | <http://tesbdev01.mycompany.net:8161/admin/>                           | `admin`             |     |
+| GIT                        | <http://tsource.mycompany.net/>                                        |                     |     |
+| Data Quality Portal        | <http://tac01.mycompany.net:8580/tdqportal>                            |                     |     |
+| karaf/ESB Runtime          | `ssh TESBDEV01.mycompany.net:8101`                                     | `tadmin`            |     |
+| ESB Runtime webconsole     | <http://tesbdev01.mycompany.net:8040/system/console>                   | `tadmin`            |     |
